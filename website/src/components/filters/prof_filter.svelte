@@ -29,4 +29,4 @@
 </script>
 
 <h5 class="flex justify-center">Select Professor</h5>
-<Select bind:value={value3} outlined autocomplete {label} {items} />
+<Select color= 'blue' bind:value={value3} outlined autocomplete {label} {items} />

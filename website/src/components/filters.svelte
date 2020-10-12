@@ -4,18 +4,12 @@ import FilterLevel from "../components/filters/level_filter.svelte";
 import FilterEC from "../components/filters/ec_filter.svelte";
 import FilterProf from "../components/filters/prof_filter.svelte";
 import FilterLang from "../components/filters/lang_filter.svelte";
+import GoButton from "../components/go_button.svelte";
 </script>
-
-
-<!-- <p>DEBUG: Filter has been imported</p> -->
 
 <div><FilterPeriod /></div>
 <div><FilterLevel /></div>
 <div><FilterEC /></div>
 <div><FilterProf /></div>
 <div><FilterLang /></div>
-
-
-
-
-
+<div><GoButton /></div>
