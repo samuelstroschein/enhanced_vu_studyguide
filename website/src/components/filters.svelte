@@ -7,11 +7,15 @@ import FilterLang from "../components/filters/lang_filter.svelte";
 </script>
 
 
-<p>DEBUG: Filter has been imported</p>
+<!-- <p>DEBUG: Filter has been imported</p> -->
 
-<FilterPeriod />
-<FilterLevel />
-<FilterEC />
-<FilterProf />
-<FilterLang />
+<div><FilterPeriod /></div>
+<div><FilterLevel /></div>
+<div><FilterEC /></div>
+<div><FilterProf /></div>
+<div><FilterLang /></div>
+
+
+
+
 
