@@ -15,7 +15,8 @@
     "compression": "^1.7.1",
     "polka": "next",
     "sirv": "^1.0.0",
-    "smelte": "^1.0.15"
+    "smelte": "^1.0.15",
+    "sparql-http-client": "^2.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
