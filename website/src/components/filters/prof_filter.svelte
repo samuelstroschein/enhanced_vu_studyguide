@@ -1,7 +1,6 @@
 <script>
   import Select from "smelte/src/components/Select";
-  import Checkbox from "smelte/src/components/Checkbox";
-
+  
   let value1 = "";
   let value2 = "";
   let value3 = "";
@@ -26,8 +25,8 @@
 
   $: selectedLabel = selectedItems.map(i => i.text).join(", ");
 
-  const label = "Professor Select";
+  const label = "Search professor...";
 </script>
 
-<h5>Select Professor</h5>
+<h5 class="flex justify-center">Select Professor</h5>
 <Select bind:value={value3} outlined autocomplete {label} {items} />
