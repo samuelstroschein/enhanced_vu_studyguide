@@ -10,7 +10,7 @@ app = Flask(__name__)
 def catch_all(path):
     req_query = request.args.get('query')
     g = Graph()
-    g.parse(".../vu_studyguide.ttl", format="turtle")
+    g.parse("vu_studyguide.ttl", format="turtle")
     qres = g.query(req_query)
     serialized = qres.serialize(format='json-ld', indent=4)
     print(serialized)
