@@ -88,7 +88,7 @@ for i, course_id in enumerate(course_ids):
     teachers = general_information[6]
     # some courses dont have that information
     try:
-        teachers += general_information[8].split('\n')[:-1]
+        teachers = (teachers + general_information[8]).split('\n')[:-1]
     except:
         pass
     for teacher in teachers:
@@ -125,4 +125,4 @@ for i, course_id in enumerate(course_ids):
 # %%
 
 with open('vu_studyguide', 'w') as f:
-    g.serialize('vu_studyguide', format='turtle')
+    g.serialize('vu_studyguide.ttl', format='turtle')
