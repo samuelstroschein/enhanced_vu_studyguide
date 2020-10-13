@@ -1,6 +1,3 @@
-.ripple.svelte-1o8z87d{
-  position:absolute !important
-}
 .label-top.svelte-r33x2y{
   line-height:0.05
 }
@@ -13,6 +10,9 @@
 
 label.text-xs{
   font-size:0.7rem
+}
+.ripple.svelte-1o8z87d{
+  position:absolute !important
 }
 .line.svelte-xd9zs6{
   height:1px
