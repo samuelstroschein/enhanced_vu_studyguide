@@ -37,7 +37,6 @@ startMyAwesomeApp = function(){
 		});
 
 	};
-}
 // https://www.npmjs.com/package/sparql-http-client This is the package used for SPARQL
 // Above code does return back shit from SPARQL, which is great but I can't get it to only run when clicking the Start Search Button. 
 </script>
