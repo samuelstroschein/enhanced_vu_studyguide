@@ -124,5 +124,5 @@ for i, course_id in enumerate(course_ids):
         pass
 # %%
 
-with open('vu_studyguide', 'w') as f:
+with open('vu_studyguide.ttl', 'w') as f:
     g.serialize('vu_studyguide.ttl', format='turtle')
