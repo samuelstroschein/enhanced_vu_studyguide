@@ -1,6 +1,9 @@
+import sys
 from http.server import BaseHTTPRequestHandler
 from rdflib import Graph, RDF, Namespace, Literal, URIRef
 from flask import Flask, Response, request
+from rdflib.plugins.sparql.results.jsonresults import JSONResultSerializer
+
 
 app = Flask(__name__)
 
@@ -12,4 +15,6 @@ def catch_all(path):
     g = Graph()
     g.parse("vu_studyguide.ttl", format="turtle")
     qres = g.query(req_query)
-    return Response(qres[0])
+    json = JSONResultSerializer(qres).serialize(sys.stdout)
+    print(json)
+    return Response(json)
