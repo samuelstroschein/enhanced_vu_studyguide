@@ -101,14 +101,17 @@ for i, course_id in enumerate(course_ids):
             br.extract()
         for h3 in section.findAll("h3"):
             h3.extract()
-    g.add((URIRef(VUC + course_id), VUP.course_objective,
-           Literal(" ".join(course_description[0].text.split()))))
-    g.add((URIRef(VUC + course_id), VUP.course_content,
-           Literal(" ".join(course_description[1].text.split()))))
-    g.add((URIRef(VUC + course_id), VUP.teaching_methods,
-           Literal(" ".join(course_description[2].text.split()))))
-    g.add((URIRef(VUC + course_id), TEACH.grading,
-           Literal(" ".join(course_description[3].text.split()))))
+    try:
+        g.add((URIRef(VUC + course_id), VUP.course_objective,
+               Literal(" ".join(course_description[0].text.split()))))
+        g.add((URIRef(VUC + course_id), VUP.course_content,
+               Literal(" ".join(course_description[1].text.split()))))
+        g.add((URIRef(VUC + course_id), VUP.teaching_methods,
+               Literal(" ".join(course_description[2].text.split()))))
+        g.add((URIRef(VUC + course_id), TEACH.grading,
+               Literal(" ".join(course_description[3].text.split()))))
+    except:
+        pass
     # sometimes not provided
     try:
         g.add((URIRef(VUC + course_id), VUP.literature,
