@@ -48,6 +48,8 @@ g.bind('dbr', DBR)
 
 for course_id in course_ids:
     course_page = requests.get(course_url_schema + course_id)
+    if course_page.status_code != 200:
+        continue
     soup = BeautifulSoup(course_page.text, "html.parser")
     # course is a course
     g.add((URIRef(VUC + course_id), RDF.type, TEACH.Course))
@@ -68,7 +70,6 @@ for course_id in course_ids:
     # course is taught by faculty
     # TODO instead of literal use vu websites for the faculties?
     g.add((URIRef(VUC + course_id), VUP.faculty, Literal(general_information[5])))
-    break #! remove me
     # instead of professor responsible for course (doesnt exist in vocabularies)
     # i just add who is teaching the course (can be multiple persons)
     # i scrape all information about course coordinator and teacher both are sometimes
@@ -78,9 +79,24 @@ for course_id in course_ids:
     for teacher in teachers:
         g.add(((URIRef(VUC + course_id)), TEACH.teacher, Literal(teacher)))
     course_description = soup.find(id="course-description").findAll("div", "paragraph")
-    
-    
-    
-    
-
+    # deleting <br> and <h3> tags
+    for section in course_description:
+        for br in section.findAll("br"):
+            br.extract()
+        for h3 in section.findAll("h3"):
+            h3.extract()
+    g.add((URIRef(VUC + course_id), VUP.course_objective, Literal(" ".join(course_description[0].text.split()))))
+    g.add((URIRef(VUC + course_id), VUP.course_content, Literal(" ".join(course_description[1].text.split()))))
+    g.add((URIRef(VUC + course_id), VUP.teaching_methods, Literal(" ".join(course_description[2].text.split()))))
+    g.add((URIRef(VUC + course_id), TEACH.grading, Literal(" ".join(course_description[3].text.split()))))
+    g.add((URIRef(VUC + course_id), VUP.literature, Literal(" ".join(course_description[4].text.split()))))
+    # sometimes not provided
+    try:
+        g.add((URIRef(VUC + course_id), VUP.target_audience, Literal(" ".join(course_description[5].text.split()))))
+        g.add((URIRef(VUC + course_id), VUP.recommended_background, Literal(" ".join(course_description[6].text.split()))))
+    except:
+        pass
 # %%
+
+with open('vu_studyguide', 'w') as f:
+        g.serialize('vu_studyguide', format='turtle')
