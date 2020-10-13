@@ -26,9 +26,9 @@ g = Graph()
 VUC = Namespace(course_url_schema)
 g.bind('vuc', VUC)
 
-# VUP = VUProperties
-VUP = Namespace('https://www.vu.nl/en/properties/')
-g.bind('vup', VUP)
+# VU = everything from the vu that is not a course
+VU = Namespace('https://www.vu.nl/en/properties/')
+g.bind('vu', VU)
 
 # defining all namespaces
 TEACH = Namespace('http://linkedscience.org/teach/ns#')
@@ -52,73 +52,73 @@ for i, course_id in enumerate(course_ids):
     if course_page.status_code != 200:
         continue
     soup = BeautifulSoup(course_page.text, "html.parser")
+    # course is a course
+    g.add((URIRef(VUC + course_id), RDF.type, TEACH.Course))
+    # name of the course
+    g.add((URIRef(VUC + course_id), TEACH.courseTitle,
+           Literal(soup.find(id="title").find("h2").contents[0])))
+    # general information (left box in studyguide) stores all DATA -> course_code, credits, period...
+    general_information = soup.find("div", "course-data").findAll("td")
+    # getting inner HTML for all data
+    general_information = [x.text for x in general_information]
+    g.add((URIRef(VUC + course_id), TEACH.ects,
+           Literal(int(general_information[1].split()[0]))))
+    # academicTerm is string because can be "whole academic year" or "P(eriod)3"
+    g.add((URIRef(VUC + course_id), TEACH.academicTerm,
+           Literal(general_information[2])))
+    g.add((URIRef(VUC + course_id), VU.courseLevel,
+           Literal(int(general_information[3]))))
+    # language is using the dbr recourse
     try:
-        # course is a course
-        g.add((URIRef(VUC + course_id), RDF.type, TEACH.Course))
-        # name of the course
-        g.add((URIRef(VUC + course_id), TEACH.courseTitle,
-               Literal(soup.find(id="title").find("h2").contents[0])))
-        # general information (left box in studyguide) stores all DATA -> course_code, credits, period...
-        general_information = soup.find("div", "course-data").findAll("td")
-        # getting inner HTML for all data
-        general_information = [x.text for x in general_information]
-        g.add((URIRef(VUC + course_id), TEACH.ects,
-               Literal(int(general_information[1].split()[0]))))
-        # academicTerm is string because can be "whole academic year" or "P(eriod)3"
-        g.add((URIRef(VUC + course_id), TEACH.academicTerm,
-               Literal(general_information[2])))
-        # just using VU.course level because I could not find something on the vocabularies
-        g.add((URIRef(VUC + course_id), VUP.course_level,
-               Literal(int(general_information[3]))))
-        # language is using the dbr recourse
         language_dbr_format = general_information[4].split()[0] + '_language'
         g.add((URIRef(VUC + course_id), DBO.language,
                URIRef(DBR + language_dbr_format)))
-        # course is taught by faculty
-        # TODO instead of literal use vu websites for the faculties?
-        g.add((URIRef(VUC + course_id), VUP.faculty,
-               Literal(general_information[5])))
     except:
         pass
-    # instead of professor responsible for course (doesnt exist in vocabularies)
-    # i just add who is teaching the course (can be multiple persons)
-    # i scrape all information about course coordinator and teacher both are sometimes
-    # empty on given courses but at least one of them is always filled in
-    # TODO here too teachers as page? but we have page so just leave it as literal?
-    teachers = general_information[6]
-    # some courses dont have that information
+    try:
+        faculty = "_".join(general_information[5].split())
+        g.add((URIRef(VUC + course_id), VU.offeredByFaculty,
+               URIRef(VU + faculty)))
+    except:
+        pass
+    try:
+        teachers = general_information[6]
+    except:
+        pass
     try:
         teachers = (teachers + general_information[8]).split('\n')[:-1]
     except:
         pass
-    for teacher in teachers:
-        g.add(((URIRef(VUC + course_id)), TEACH.teacher, Literal(teacher)))
-    course_description = soup.find(
-        id="course-description").findAll("div", "paragraph")
-    # deleting <br> and <h3> tags
-    for section in course_description:
-        for br in section.findAll("br"):
-            br.extract()
-        for h3 in section.findAll("h3"):
-            h3.extract()
     try:
-        g.add((URIRef(VUC + course_id), VUP.course_objective,
+        for teacher in teachers:
+            g.add(((URIRef(VUC + course_id)), VU.taughtBy, URIRef(VU + teacher)))
+    except:
+        pass
+    try:
+        course_description = soup.find(
+            id="course-description").findAll("div", "paragraph")
+        # deleting <br> and <h3> tags
+        for section in course_description:
+            for br in section.findAll("br"):
+                br.extract()
+            for h3 in section.findAll("h3"):
+                h3.extract()
+        g.add((URIRef(VUC + course_id), VU.courseObjective,
                Literal(" ".join(course_description[0].text.split()))))
-        g.add((URIRef(VUC + course_id), VUP.course_content,
+        g.add((URIRef(VUC + course_id), VU.courseContent,
                Literal(" ".join(course_description[1].text.split()))))
-        g.add((URIRef(VUC + course_id), VUP.teaching_methods,
+        g.add((URIRef(VUC + course_id), VU.teachingMethods,
                Literal(" ".join(course_description[2].text.split()))))
         g.add((URIRef(VUC + course_id), TEACH.grading,
                Literal(" ".join(course_description[3].text.split()))))
     except:
         pass
-    # sometimes not provided
     try:
-        g.add((URIRef(VUC + course_id), VUP.literature,
+        g.add((URIRef(VUC + course_id), VU.literature,
                Literal(" ".join(course_description[4].text.split()))))
-        g.add((URIRef(VUC + course_id), VUP.target_audience,
+        g.add((URIRef(VUC + course_id), VU.targetAudience,
                Literal(" ".join(course_description[5].text.split()))))
-        g.add((URIRef(VUC + course_id), VUP.recommended_background,
+        g.add((URIRef(VUC + course_id), VU.recommendedBackground,
                Literal(" ".join(course_description[6].text.split()))))
     except:
         pass
