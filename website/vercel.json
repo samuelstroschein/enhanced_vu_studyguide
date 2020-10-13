@@ -1,7 +1,7 @@
 {
     "functions": {
       "api/sparql.py": {
-        "includeFiles": "api/**"
+        "includeFiles": "vu_studyguide.ttl"
       }
     }
   }
