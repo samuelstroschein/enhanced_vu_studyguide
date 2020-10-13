@@ -7,7 +7,7 @@ from rdflib import Graph, RDF, Namespace, Literal, URIRef
 import requests
 from bs4 import BeautifulSoup
 
-with open("vu_net_all_courses.html") as fp:
+with open("vu_net_all_courses.html",encoding="utf8") as fp:
     soup = BeautifulSoup(fp, "html.parser")
 
 course_ids_divs = soup.findAll("div", "code ng-binding")
