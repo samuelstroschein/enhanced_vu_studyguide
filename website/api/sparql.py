@@ -1,10 +1,10 @@
 from http.server import BaseHTTPRequestHandler
 from rdflib import Graph, RDF, Namespace, Literal, URIRef
-from SPARQLWrapper import SPARQLWrapper, JSON
 from flask import Flask, Response, request
 
 
 app = Flask(__name__)
+
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
@@ -23,7 +23,7 @@ def catch_all(path):
 # PREFIX teach: <http://linkedscience.org/teach/ns#>
 # PREFIX dbo: <http://dbpedia.org/ontology/>
 # PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# select DISTINCT * where { 
+# select DISTINCT * where {
 #     ?course teach:ects ?credits ;
 #             vu:courseLevel ?level;
 #             teach:academicTerm ?period;
