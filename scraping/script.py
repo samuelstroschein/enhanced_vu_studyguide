@@ -43,6 +43,9 @@ g.bind('dbo', DBO)
 DBR = Namespace("http://dbpedia.org/resource/")
 g.bind('dbr', DBR)
 
+RDFS = Namespace("http://www.w3.org/2000/01/rdf-schema#")
+g.bind('rdfs', RDFS)
+
 # URIRef is used for course_id because the course_id is dynamic and VUC.course_id would add the
 # triple (course_id, property, object) and not (AM_470604, property, object)
 
@@ -76,9 +79,12 @@ for i, course_id in enumerate(course_ids):
     except:
         pass
     try:
-        faculty = "_".join(general_information[5].split())
+        label = general_information[5]
+        faculty_uri = "_".join(label.split())
         g.add((URIRef(VUC + course_id), VU.offeredByFaculty,
-               URIRef(VU + faculty)))
+               URIRef(VU + faculty_uri)))
+        g.add((URIRef(VU + faculty_uri), RDFS.label,
+               Literal(label)))
     except:
         pass
     try:
@@ -91,7 +97,10 @@ for i, course_id in enumerate(course_ids):
         pass
     try:
         for teacher in teachers:
-            g.add(((URIRef(VUC + course_id)), VU.taughtBy, URIRef(VU + teacher)))
+            label = teacher
+            teacher_uri = "_".join(teachers[0].split())
+            g.add(((URIRef(VUC + course_id)), VU.taughtBy, URIRef(VU + teacher_uri)))
+            g.add((URIRef(VU + teacher_uri)), RDFS.label, Literal(label))
     except:
         pass
     try:
