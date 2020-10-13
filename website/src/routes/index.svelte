@@ -11,3 +11,5 @@
   <div class="col-span-8 ..."><Results /></div>
   <div class="col-span-2 ..."><GoButton /></div>
 </div>
+
+<a href="vu_studyguide">Link to ontology</a>
