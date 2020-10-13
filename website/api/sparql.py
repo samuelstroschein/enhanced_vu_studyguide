@@ -1,8 +1,14 @@
 from rdflib import Graph, RDF, Namespace, Literal, URIRef
 from flask import Flask, Response, request
+import pickle
 
 
 app = Flask(__name__)
+
+# opening the graph without parsing it (otherwise function runs too long)
+filename = 'vu_studyguide_pickled'
+with open(filename, 'rb') as fi:
+    g = pickle.load(fi)
 
 
 @app.route('/', defaults={'path': ''})
@@ -10,8 +16,6 @@ app = Flask(__name__)
 def catch_all(path):
     req_query = request.args.get('query')
     print(req_query)
-    g = Graph()
-    g.parse("vu_studyguide.ttl", format="turtle")
     qres = g.query("""
                PREFIX vu: <https://www.vu.nl/en/properties/>
 PREFIX vuc: <https://studiegids.vu.nl/en/2020-2021/courses/>
