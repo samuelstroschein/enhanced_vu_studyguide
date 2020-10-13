@@ -14,14 +14,5 @@ with open('vu_studyguide_pickled.pk', 'rb') as fi:
 @app.route('/<path:path>')
 def catch_all(path):
     req_query = request.args.get('query')
-    print(req_query)
     qres = g.query(req_query)
-    result = None
-    for row in qres:
-        result = row
-        break
-    return Response(result)
-    # qres = g.query(req_query)
-    # serialized = qres.serialize(format='json-ld', indent=4)
-    # print(serialized)
-    # return Response(qres.serialize(format='json-ld', indent=4))
+    return Response(qres.serialize(format="json"))
