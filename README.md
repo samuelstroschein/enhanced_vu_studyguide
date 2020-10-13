@@ -1,17 +1,25 @@
-# enhanced_vu_studyguide
+# Ontology
+
+**LEGEND**:  
+-> implied (needs to be programmed?)
 
 
-### Build & Run the project
+### Prefixes
 
-```bash
-npm install
-npm run dev
-```
+PREFIX vuc <https://studiegids.vu.nl/en/2020-2021/courses/>  
+PREFIX vu <https://www.vu.nl/>  
+PREFIX aiiso <https://vocab.org/aiiso/schema#>  
+PREFIX teach <http://linkedscience.org/teach/ns/#>  
 
-Open up [localhost:3000](http://localhost:3000) and start clicking around.
-
-### Export static site
-
-```bash
-npm run export
-```
+### Classes
+1. teach:Course  
+  1.1 vu:ScienceCourse -> ?course vu:offeredBy vu:Faculty_Of_Science
+  1.2 vu:BusinessCourse -> ?course vu:offeredBy vu:Faculty_Of_Business  
+  1.3 vu:TheologyCourse -> ?course vu:offeredBy vu:Faculty_Of_Theology  
+  1.4 vu:HumanitiesCourse -> ?course vu:offeredBy vu:Faculty_Of_Humanities  
+    
+2. teach:Teacher  
+  -> every ?person who is aiiso:teaching a Course, ?person is a teach:Teacher
+  -> every course that is vu:taughtBy ?person, ?person is a teach:Teacher
+  
+3. aiiso:Faculty
