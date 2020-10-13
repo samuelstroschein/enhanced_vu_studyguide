@@ -6,8 +6,7 @@ import pickle
 app = Flask(__name__)
 
 # opening the graph without parsing it (otherwise function runs too long)
-filename = 'vu_studyguide_pickled'
-with open(filename, 'rb') as fi:
+with open('vu_studyguide_pickled.pk', 'rb') as fi:
     g = pickle.load(fi)
 
 
