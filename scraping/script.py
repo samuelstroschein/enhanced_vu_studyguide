@@ -7,7 +7,7 @@ from rdflib import Graph, RDF, Namespace, Literal, URIRef
 import requests
 from bs4 import BeautifulSoup
 
-with open("vu_net_all_courses.html",encoding="utf8") as fp:
+with open("vu_net_all_courses.html", encoding="utf8") as fp:
     soup = BeautifulSoup(fp, "html.parser")
 
 course_ids_divs = soup.findAll("div", "code ng-binding")
@@ -52,31 +52,34 @@ for i, course_id in enumerate(course_ids):
     if course_page.status_code != 200:
         continue
     soup = BeautifulSoup(course_page.text, "html.parser")
-    # course is a course
-    g.add((URIRef(VUC + course_id), RDF.type, TEACH.Course))
-    # name of the course
-    g.add((URIRef(VUC + course_id), TEACH.courseTitle,
-           Literal(soup.find(id="title").find("h2").contents[0])))
-    # general information (left box in studyguide) stores all DATA -> course_code, credits, period...
-    general_information = soup.find("div", "course-data").findAll("td")
-    # getting inner HTML for all data
-    general_information = [x.text for x in general_information]
-    g.add((URIRef(VUC + course_id), TEACH.ects,
-           Literal(int(general_information[1].split()[0]))))
-    # academicTerm is string because can be "whole academic year" or "P(eriod)3"
-    g.add((URIRef(VUC + course_id), TEACH.academicTerm,
-           Literal(general_information[2])))
-    # just using VU.course level because I could not find something on the vocabularies
-    g.add((URIRef(VUC + course_id), VUP.course_level,
-           Literal(int(general_information[3]))))
-    # language is using the dbr recourse
-    language_dbr_format = general_information[4].split()[0] + '_language'
-    g.add((URIRef(VUC + course_id), DBO.language,
-           URIRef(DBR + language_dbr_format)))
-    # course is taught by faculty
-    # TODO instead of literal use vu websites for the faculties?
-    g.add((URIRef(VUC + course_id), VUP.faculty,
-           Literal(general_information[5])))
+    try:
+        # course is a course
+        g.add((URIRef(VUC + course_id), RDF.type, TEACH.Course))
+        # name of the course
+        g.add((URIRef(VUC + course_id), TEACH.courseTitle,
+               Literal(soup.find(id="title").find("h2").contents[0])))
+        # general information (left box in studyguide) stores all DATA -> course_code, credits, period...
+        general_information = soup.find("div", "course-data").findAll("td")
+        # getting inner HTML for all data
+        general_information = [x.text for x in general_information]
+        g.add((URIRef(VUC + course_id), TEACH.ects,
+               Literal(int(general_information[1].split()[0]))))
+        # academicTerm is string because can be "whole academic year" or "P(eriod)3"
+        g.add((URIRef(VUC + course_id), TEACH.academicTerm,
+               Literal(general_information[2])))
+        # just using VU.course level because I could not find something on the vocabularies
+        g.add((URIRef(VUC + course_id), VUP.course_level,
+               Literal(int(general_information[3]))))
+        # language is using the dbr recourse
+        language_dbr_format = general_information[4].split()[0] + '_language'
+        g.add((URIRef(VUC + course_id), DBO.language,
+               URIRef(DBR + language_dbr_format)))
+        # course is taught by faculty
+        # TODO instead of literal use vu websites for the faculties?
+        g.add((URIRef(VUC + course_id), VUP.faculty,
+               Literal(general_information[5])))
+    except:
+        pass
     # instead of professor responsible for course (doesnt exist in vocabularies)
     # i just add who is teaching the course (can be multiple persons)
     # i scrape all information about course coordinator and teacher both are sometimes
