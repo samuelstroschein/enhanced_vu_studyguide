@@ -47,7 +47,7 @@ g.bind('dbr', DBR)
 # triple (course_id, property, object) and not (AM_470604, property, object)
 
 for i, course_id in enumerate(course_ids):
-    print(i)
+    print(f"Scraped page {i} of {len(course_ids)}", end="\r", flush=True)
     course_page = requests.get(course_url_schema + course_id)
     if course_page.status_code != 200:
         continue
