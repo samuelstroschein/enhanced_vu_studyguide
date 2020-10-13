@@ -15,7 +15,7 @@ with open('vu_studyguide_pickled.pk', 'rb') as fi:
 def catch_all(path):
     req_query = request.args.get('query')
     print(req_query)
-    qres = g.query(qres)
+    qres = g.query(req_query)
     result = None
     for row in qres:
         result = row
