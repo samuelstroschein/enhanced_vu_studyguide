@@ -82,8 +82,12 @@ for i, course_id in enumerate(course_ids):
     # i scrape all information about course coordinator and teacher both are sometimes
     # empty on given courses but at least one of them is always filled in
     # TODO here too teachers as page? but we have page so just leave it as literal?
-    teachers = (general_information[6] +
-                general_information[8]).split('\n')[:-1]
+    teachers = general_information[6]
+    # some courses dont have that information
+    try:
+        teachers += general_information[8].split('\n')[:-1]
+    except:
+        pass
     for teacher in teachers:
         g.add(((URIRef(VUC + course_id)), TEACH.teacher, Literal(teacher)))
     course_description = soup.find(
