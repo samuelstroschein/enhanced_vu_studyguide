@@ -145,5 +145,5 @@ with open('vu_studyguide.ttl', 'w') as f:
 # saving the parsed graph in the root directory of the website
 # this is done so that the serverless function does not need
 # to parse the graph each time which is compute intensive
-with open("../website/vu_studyguide_pickled.pk", 'w') as f:
-    word_list = pickle.dump(g, f)
+with open("../website/vu_studyguide_pickled.pk", 'wb') as f:
+    pickle.dump(g, f)
