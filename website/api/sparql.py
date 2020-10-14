@@ -1,9 +1,10 @@
 from rdflib import Graph, RDF, Namespace, Literal, URIRef
 from flask import Flask, Response, request
+from flask_cors import CORS
 import pickle
 
-
 app = Flask(__name__)
+CORS(app)
 
 # opening the graph without parsing it (otherwise function runs too long)
 with open('vu_studyguide_pickled.pk', 'rb') as fi:
