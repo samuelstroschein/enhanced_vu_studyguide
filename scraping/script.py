@@ -6,6 +6,7 @@
 from rdflib import Graph, RDF, Namespace, Literal, URIRef
 import requests
 from bs4 import BeautifulSoup
+import pickle
 
 with open("vu_net_all_courses.html", encoding="utf8") as fp:
     soup = BeautifulSoup(fp, "html.parser")
@@ -73,9 +74,12 @@ for i, course_id in enumerate(course_ids):
            Literal(int(general_information[3]))))
     # language is using the dbr recourse
     try:
+        lang_label = general_information[4]
         language_dbr_format = general_information[4].split()[0] + '_language'
         g.add((URIRef(VUC + course_id), DBO.language,
                URIRef(DBR + language_dbr_format)))
+        g.add((URIRef(VUC + course_id), RDFS.label,
+               Literal(lang_label)))
     except:
         pass
     try:
@@ -133,5 +137,13 @@ for i, course_id in enumerate(course_ids):
         pass
 # %%
 
+# save the graph as ttl
 with open('vu_studyguide.ttl', 'w') as f:
     g.serialize('vu_studyguide.ttl', format='turtle')
+
+
+# saving the parsed graph in the root directory of the website
+# this is done so that the serverless function does not need
+# to parse the graph each time which is compute intensive
+with open("../website/vu_studyguide_pickled.pk", 'w') as f:
+    word_list = pickle.dump(g, f)
