@@ -5,46 +5,49 @@ import { queryResponse } from '../store.js';
 async function SparQL(){
 	
 	var mySparqlEndpoint = "https://enhanced-vu-studyguide.vercel.app/api/sparql" ;
-	var mySparqlQuery = `select DISTINCT * where { 
-	?course teach:ects ?credits ;
-         	vu:courseLevel ?level;
-          	teach:academicTerm ?period;
-           	teach:courseTitle ?title;
-            vu:taughtBy ?teacher;
-            dbo:language ?language;
-            teach:grading ?grading;
+	var mySparqlQuery = `select DISTINCT * { 
+	?course rdf:type teach:Course;
+         	teach:academicTerm ?period;
+          	vu:courseLevel ?level;
+        	teach:ects ?credits;
+         	vu:taughtBy ?teacher;
+          	dbo:language ?language;
+           	teach:courseTitle ?title.
+           OPTIONAL {
+        	?course teach:grading ?grading;
             vu:courseContent ?content;
-            rdf:type teach:Course;
             vu:courseObjective ?objective;
             vu:offeredByFaculty ?faculty;
             vu:literature ?literature;
-            vu:teachingMethods ?teachingMethod.
-} LIMIT 100`;
+            vu:teachingMethods ?teachingMethod. 
+       		?faculty rdfs:label ?facultylabel.
+    }   	
+} LIMIT 10`;
 	var response = await fetch(mySparqlEndpoint + "?query=" + mySparqlQuery, {
 	method: "GET",
 	headers: {'Accept':'application/sparql-results+json', 'Content-Type':'application/sparql-results+json'}
 	})
 	var json = await response.json()
+	console.log(json)
 	$queryResponse = [];
 	json.results.bindings.forEach(function(val){
 		var parsedJson = {
 		text: val.title.value,
 		items: [
-		{ text:"Credits: " + val.period.value},
+		{ text:"Period: " + val.period.value},
+		{ text:"Credits: " + val.credits.value},
 		{ text:"Level: " + val.level.value},
 		{ text:"Professor: " + val.teacher.value},
 		{ text:"Language: " + val.language.value},
 		{ text:"Grading: " + val.grading.value},
 		{ text:"Course Content: " + val.content.value},
 		{ text:"Course Objective: " + val.objective.value},
-		{ text:"Faculty: " + val.faculty.value},
+		{ text:"Faculty: " + val.facultylabel.value},
 		{ text:"Literature: " + val.literature.value},
 		{ text:"Teaching Methods: " + val.teachingMethod.value}
     		]
 		  }
 		$queryResponse = [...$queryResponse, parsedJson]
-		// console.log(val.label.value)
-		// console.log(val.oneDensity.value)
 	});
 }
 </script>
