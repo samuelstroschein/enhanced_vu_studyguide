@@ -48,3 +48,6 @@ select DISTINCT * where {
             vu:teachingMethods ?teachingMethod.
 } LIMIT 100
 ```
+
+link to endpoint [click](https://enhanced-vu-studyguide.vercel.app/api/sparql)
+make sure that you add ?query={your_query} to the endpoint. Important do not define the prefixes, instead just start the query with SELECT * WHERE{} and use whitespace!
