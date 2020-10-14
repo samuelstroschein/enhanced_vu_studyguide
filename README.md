@@ -13,8 +13,8 @@ PREFIX teach <http://linkedscience.org/teach/ns/#>
 
 ### Classes
 1. teach:Course  
-  1.1 vu:ScienceCourse -> ?course vu:offeredBy vu:Faculty_Of_Science
-  1.2 vu:BusinessCourse -> ?course vu:offeredBy vu:Faculty_Of_Business  
+  1.1 vu:ScienceCourse -> ?course vu:offeredBy vu:Faculty_Of_Science  
+  1.2 vu:BusinessCourse -> ?course vu:offeredBy vu:Faculty_Of_Business   
   1.3 vu:TheologyCourse -> ?course vu:offeredBy vu:Faculty_Of_Theology  
   1.4 vu:HumanitiesCourse -> ?course vu:offeredBy vu:Faculty_Of_Humanities  
     
