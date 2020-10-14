@@ -4,47 +4,50 @@ import { queryResponse } from '../store.js';
 
 async function SparQL(){
 	
-	var mySparqlEndpoint = "http://192.168.178.21:7200/repositories/FinalProject" ;
-	var mySparqlQuery = `select DISTINCT * where { 
-			?course teach:ects ?credit ;
-         	vup:course_level ?level;
-          	teach:academicTerm ?period;
-           	teach:courseTitle ?title;
-            teach:teacher ?teacher;
-            dbo:language ?language;
-            teach:grading ?grading;
-            vup:course_content ?content;
-            rdf:type teach:Course;
-            vup:course_objective ?objective;
-            vup:faculty ?faculty;
-            vup:literature ?literature;
-            vup:teaching_methods ?teachingMethod.
+	var mySparqlEndpoint = "https://enhanced-vu-studyguide.vercel.app/api/sparql" ;
+	var mySparqlQuery = `select DISTINCT * { 
+	?course rdf:type teach:Course;
+         	teach:academicTerm ?period;
+          	vu:courseLevel ?level;
+        	teach:ects ?credits;
+         	vu:taughtBy ?teacher;
+          	dbo:language ?language;
+           	teach:courseTitle ?title.
+           OPTIONAL {
+        	?course teach:grading ?grading;
+            vu:courseContent ?content;
+            vu:courseObjective ?objective;
+            vu:offeredByFaculty ?faculty;
+            vu:literature ?literature;
+            vu:teachingMethods ?teachingMethod. 
+       		?faculty rdfs:label ?facultylabel.
+    }   	
 } LIMIT 10`;
 	var response = await fetch(mySparqlEndpoint + "?query=" + mySparqlQuery, {
 	method: "GET",
 	headers: {'Accept':'application/sparql-results+json', 'Content-Type':'application/sparql-results+json'}
 	})
 	var json = await response.json()
+	console.log(json)
 	$queryResponse = [];
 	json.results.bindings.forEach(function(val){
 		var parsedJson = {
 		text: val.title.value,
 		items: [
-		{ text:"Credits: " + val.period.value},
+		{ text:"Period: " + val.period.value},
+		{ text:"Credits: " + val.credits.value},
 		{ text:"Level: " + val.level.value},
 		{ text:"Professor: " + val.teacher.value},
 		{ text:"Language: " + val.language.value},
-		{ text:"grading: " + val.grading.value},
-		{ text:"course content: " + val.content.value},
-		{ text:"course objective: " + val.objective.value},
-		{ text:"faculty: " + val.faculty.value},
-		{ text:"literature: " + val.literature.value},
-		{ text:"teaching methods: " + val.teachingMethod.value}
+		{ text:"Grading: " + val.grading.value},
+		{ text:"Course Content: " + val.content.value},
+		{ text:"Course Objective: " + val.objective.value},
+		{ text:"Faculty: " + val.facultylabel.value},
+		{ text:"Literature: " + val.literature.value},
+		{ text:"Teaching Methods: " + val.teachingMethod.value}
     		]
 		  }
 		$queryResponse = [...$queryResponse, parsedJson]
-		// console.log(val.label.value)
-		// console.log(val.oneDensity.value)
 	});
 }
 </script>
