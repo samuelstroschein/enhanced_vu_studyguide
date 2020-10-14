@@ -4,22 +4,22 @@ import { queryResponse } from '../store.js';
 
 async function SparQL(){
 	
-	var mySparqlEndpoint = "http://192.168.178.21:7200/repositories/FinalProject" ;
+	var mySparqlEndpoint = "https://enhanced-vu-studyguide.vercel.app/api/sparql" ;
 	var mySparqlQuery = `select DISTINCT * where { 
-			?course teach:ects ?credit ;
-         	vup:course_level ?level;
+	?course teach:ects ?credits ;
+         	vu:courseLevel ?level;
           	teach:academicTerm ?period;
            	teach:courseTitle ?title;
-            teach:teacher ?teacher;
+            vu:taughtBy ?teacher;
             dbo:language ?language;
             teach:grading ?grading;
-            vup:course_content ?content;
+            vu:courseContent ?content;
             rdf:type teach:Course;
-            vup:course_objective ?objective;
-            vup:faculty ?faculty;
-            vup:literature ?literature;
-            vup:teaching_methods ?teachingMethod.
-} LIMIT 10`;
+            vu:courseObjective ?objective;
+            vu:offeredByFaculty ?faculty;
+            vu:literature ?literature;
+            vu:teachingMethods ?teachingMethod.
+} LIMIT 100`;
 	var response = await fetch(mySparqlEndpoint + "?query=" + mySparqlQuery, {
 	method: "GET",
 	headers: {'Accept':'application/sparql-results+json', 'Content-Type':'application/sparql-results+json'}
@@ -34,12 +34,12 @@ async function SparQL(){
 		{ text:"Level: " + val.level.value},
 		{ text:"Professor: " + val.teacher.value},
 		{ text:"Language: " + val.language.value},
-		{ text:"grading: " + val.grading.value},
-		{ text:"course content: " + val.content.value},
-		{ text:"course objective: " + val.objective.value},
-		{ text:"faculty: " + val.faculty.value},
-		{ text:"literature: " + val.literature.value},
-		{ text:"teaching methods: " + val.teachingMethod.value}
+		{ text:"Grading: " + val.grading.value},
+		{ text:"Course Content: " + val.content.value},
+		{ text:"Course Objective: " + val.objective.value},
+		{ text:"Faculty: " + val.faculty.value},
+		{ text:"Literature: " + val.literature.value},
+		{ text:"Teaching Methods: " + val.teachingMethod.value}
     		]
 		  }
 		$queryResponse = [...$queryResponse, parsedJson]
