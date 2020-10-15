@@ -3,7 +3,8 @@
   color="blue"
   outlined
   autocomplete
-  bind:value={$teacherFilter}
+  bind:value={selected}
+  on:change={handleChange}
   {label}
   {items}
 />
@@ -12,6 +13,16 @@
   import Select from "smelte/src/components/Select";
   import { onMount } from "svelte";
   import { teacherFilter } from "../../store.js";
+
+  var selected = null;
+
+  var items = [];
+
+  const label = "Search professor...";
+
+  function handleChange() {
+    $teacherFilter = items[selected].text;
+  }
 
   async function fetchProf() {
     var mySparqlEndpoint =
@@ -44,10 +55,6 @@
       i += 1;
     });
   }
-
-  var items = [];
-
-  const label = "Search professor...";
 
   onMount(async () => {
     fetchProf();
