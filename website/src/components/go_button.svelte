@@ -2,6 +2,8 @@
 import Button from "smelte/src/components/Button";
 import { queryResponse } from '../store.js';
 import { ecFilter } from '../store.js';
+import { levelFilter } from '../store.js';
+import { periodFilter } from '../store.js';
 
 async function SparQL(){
 	
@@ -23,7 +25,9 @@ async function SparQL(){
             vu:teachingMethods ?teachingMethod. 
        		?faculty rdfs:label ?facultylabel.       	
     }   	
-    FILTER (${$ecFilter})
+	FILTER (${$ecFilter})
+	FILTER (${$levelFilter})
+	FILTER (${$periodFilter})
 } LIMIT 10`;
 	var response = await fetch(mySparqlEndpoint + "?query=" + mySparqlQuery, {
 	method: "GET",
@@ -57,3 +61,18 @@ async function SparQL(){
 <div class="flex justify-center">
     <Button color="blue" on:click = {SparQL}>Start Search</Button>
 </div>
+
+<!-- DEBUG STATEMENTS BELOW -->
+<!-- 
+<h5>DEBUG STATEMENTS</h5>
+<div>
+<p>DEBUG LEVEL: {$levelFilter}</p>
+</div>
+
+<div>
+<p>DEBUG CREDITS: {$ecFilter}</p>
+</div>
+
+<div>
+<p>DEBUG Period: {$periodFilter}</p>
+</div> -->
