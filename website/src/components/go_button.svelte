@@ -5,12 +5,13 @@ import { ecFilter } from '../store.js';
 import { levelFilter } from '../store.js';
 import { periodFilter } from '../store.js';
 import { languageFilter } from '../store.js';
-
+import { teacherFilter } from '../store.js';
 async function SparQL(){
-	
 	var mySparqlEndpoint = "https://enhanced-vu-studyguide.vercel.app/api/sparql" ;
-	var mySparqlQuery = `select DISTINCT * { 
-	?Course rdf:type teach:Course;
+	console.log($teacherFilter)
+	if($teacherFilter === "NoTeacher"){
+		var mySparqlQuery = `select DISTINCT * { 
+		?Course rdf:type teach:Course;
          	teach:academicTerm ?Period;
           	vu:courseLevel ?Level;
         	teach:ects ?Credits;
@@ -32,6 +33,35 @@ async function SparQL(){
 	FILTER (${$periodFilter})
 	FILTER (${$languageFilter})
 }LIMIT 100`;
+	}
+	else {
+		var mySparqlQuery = `select DISTINCT * { 
+		?Course rdf:type teach:Course;
+         	teach:academicTerm ?Period;
+          	vu:courseLevel ?Level;
+        	teach:ects ?Credits;
+         	vu:taughtBy ?Teacher;
+          	dbo:language ?LanguageName;
+           	teach:courseTitle ?Title.
+           OPTIONAL {
+        	?Course teach:grading ?Grading;
+            vu:courseContent ?Content;
+            vu:courseObjective ?Objective;
+            vu:offeredByFaculty ?FacultyName;
+            vu:literature ?Literature;
+            vu:teachingMethods ?Teaching_Method.
+			?FacultyName rdfs:label ?Faculty.
+			?LanguageName rdfs:label ?Language.
+			?Teacher rdfs:label ?TeacherLabel.
+    }   	
+	FILTER (${$ecFilter})
+	FILTER (${$levelFilter})
+	FILTER (${$periodFilter})
+	FILTER (${$languageFilter})
+	FILTER (?TeacherLabel = ${$teacherFilter})
+}LIMIT 100`;
+	}
+	
 	var response = await fetch(mySparqlEndpoint + "?query=" + mySparqlQuery, {
 	method: "GET",
 	headers: {'Accept':'application/sparql-results+json', 'Content-Type':'application/sparql-results+json'}
