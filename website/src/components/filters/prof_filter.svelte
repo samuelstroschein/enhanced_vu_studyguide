@@ -32,13 +32,16 @@
   }
 
   function processResponse(bindings) {
+    var i = 0;
     bindings.forEach((teacher) => {
       var parsedJson = {
+        value: i,
         text: teacher.TeacherLabel.value,
       };
       if (parsedJson.text.length < 3) return;
       // console.log(parsedJson);
       items = [...items, parsedJson];
+      i += 1;
     });
   }
 
