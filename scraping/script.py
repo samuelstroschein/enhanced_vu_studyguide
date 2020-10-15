@@ -77,7 +77,7 @@ for i, course_id in enumerate(course_ids):
         language_dbr_format = lang_label + '_language'
         g.add((URIRef(VUC + course_id), DBO.language,
                URIRef(DBR + language_dbr_format)))
-        g.add((URIRef(VUC + course_id), RDFS.label,
+        g.add((URIRef(DBR + language_dbr_format), RDFS.label,
                Literal(lang_label)))
     except:
         pass
@@ -103,7 +103,8 @@ for i, course_id in enumerate(course_ids):
             teacher_label = teacher
             teacher_uri = "_".join(teachers[0].split())
             g.add(((URIRef(VUC + course_id)), VU.taughtBy, URIRef(VU + teacher_uri)))
-            g.add((URIRef(VU + teacher_uri)), RDFS.label, Literal(teacher_label))
+            g.add((URIRef(VU + teacher_uri)),
+                  RDFS.label, Literal(teacher_label))
     except:
         pass
     try:
