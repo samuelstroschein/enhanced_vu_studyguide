@@ -1,32 +1,16 @@
 <script>
-  import Select from "smelte/src/components/Select";
-  
-  let value1 = "";
-  let value2 = "";
-  let value3 = "";
-  let value4 = "";
-
-  let showList = false;
-
-  const items = [
-    { value: 1, text: "English" },
-    { value: 2, text: "Zwahili" },
-    { value: 3, text: "French" },
-    { value: 4, text: "Dutch" },
-  ];
-
-  let selectedItems = [];
-
-  function toggle(i) {
-    return v => v.detail
-      ? selectedItems.push(i)
-      : selectedItems = selectedItems.filter(si => si !== i);
-  }
-
-  $: selectedLabel = selectedItems.map(i => i.text).join(", ");
-
-  const label = "Search language...";
+  import { languageFilter } from '../../store.js';
 </script>
 
-<h5 class="flex justify-center">Select Language</h5>
-<Select color= 'blue' bind:value={value3} outlined autocomplete {label} {items} />
+
+<h5 class="flex justify-center">Language</h5>
+
+<div class="flex justify-center">
+  <label class="inline-flex items-center mt-3">
+    <input class="form-radio h-5 w-8 text-blue-600" type=radio bind:group={$languageFilter} value={"NEED LITERAL 1"}>
+    <span class="ml-2">{"Dutch"}</span>
+    <input class="form-radio h-5 w-8 text-blue-600" type=radio bind:group={$languageFilter} value={"NEED LITERAL 2"}>
+    <span class="ml-2">{"English"}</span>
+    <br>
+  </label>
+</div>

@@ -1,14 +1,24 @@
-<script>
-  import RadioButtonGroup from "smelte/src/components/RadioButton";
-//   https://smeltejs.com/components/selection-controls 
+ <script>
+  import { periodFilter } from '../../store.js';
 </script>
+
 
 <h5 class="flex justify-center">Period</h5>
 
 <div class="flex justify-center">
-<RadioButtonGroup
-  name="Credits"
-  color="blue" 
-  classes = "h-30 w-40 grid grid-rows-3 grid-flow-col gap-0"
-  items={[{ value: 1, label: 'P1' }, { value: 2, label: 'P2' }, { value: 3, label: 'P3' },{ value: 4, label: 'P4' },{ value: 5, label: 'P5' }, { value: 6, label: 'P6' }]} />
- </div> 
+  <label class="grid gap-4 grid-cols-4">
+    <input class="form-radio h-5 w-8 text-blue-600" type=radio bind:group={$periodFilter} value={"?period = 'P1'"}>
+    <span class="ml-2">{"P1"}</span>
+    <input class="form-radio h-5 w-8 text-blue-600" type=radio bind:group={$periodFilter} value={"?period = 'P2'"}>
+    <span class="ml-2">{"P2"}</span>
+    <input class="form-radio h-5 w-8 text-blue-600" type=radio bind:group={$periodFilter} value={"?period = 'P3'"}>
+    <span class="ml-2">{"P3"}</span>
+    <input class="form-radio h-5 w-8 text-blue-600" type=radio bind:group={$periodFilter} value={"?period = 'P4'"}>
+    <span class="ml-2">{"P4"}</span>
+    <input class="form-radio h-5 w-8 text-blue-600" type=radio bind:group={$periodFilter} value={"?period = 'P5'"}>
+    <span class="ml-2">{"P5"}</span>
+    <input class="form-radio h-5 w-8 text-blue-600" type=radio bind:group={$periodFilter} value={"?period = 'P6'"}>
+    <span class="ml-2">{"P6"}</span>
+    <br>
+  </label>
+</div>

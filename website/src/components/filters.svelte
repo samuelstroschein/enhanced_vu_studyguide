@@ -10,5 +10,6 @@ import FilterLang from "../components/filters/lang_filter.svelte";
 <div><FilterPeriod /></div>
 <div><FilterLevel /></div>
 <div><FilterEC /></div>
-<div><FilterProf /></div>
 <div><FilterLang /></div>
+<div><FilterProf /></div>
+
