@@ -26,12 +26,11 @@
   function checkResponse(bindings) {
     var result = {};
     bindings.forEach(teacher => {
-      console.log(teacher);
       var parsedJson = {
         text: teacher.TeacherLabel.value
       };
       if(parsedJson.text.length < 3) return
-        console.log(parsedJson);
+        // console.log(parsedJson);
         items = [...items, parsedJson];
     });
   }

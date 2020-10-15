@@ -15,7 +15,7 @@ async function SparQL(){
           	vu:courseLevel ?Level;
         	teach:ects ?Credits;
          	vu:taughtBy ?Teacher;
-          	dbo:language ?Language;
+          	dbo:language ?LanguageName;
            	teach:courseTitle ?Title.
            OPTIONAL {
         	?Course teach:grading ?Grading;
@@ -24,11 +24,13 @@ async function SparQL(){
             vu:offeredByFaculty ?FacultyName;
             vu:literature ?Literature;
             vu:teachingMethods ?Teaching_Method.
-       		?FacultyName rdfs:label ?Faculty.
+			?FacultyName rdfs:label ?Faculty.
+			?LanguageName rdfs:label ?Language.
     }   	
 	FILTER (${$ecFilter})
 	FILTER (${$levelFilter})
 	FILTER (${$periodFilter})
+	FILTER (${$languageFilter})
 }LIMIT 100`;
 	var response = await fetch(mySparqlEndpoint + "?query=" + mySparqlQuery, {
 	method: "GET",
