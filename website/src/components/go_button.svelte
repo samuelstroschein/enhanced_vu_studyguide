@@ -59,7 +59,7 @@ async function SparQL(){
 	FILTER (${$periodFilter})
 	FILTER (${$languageFilter})
 	FILTER (?TeacherLabel = ${$teacherFilter})
-}LIMIT 100`;
+}LIMIT 1`;
 	}
 	
 	var response = await fetch(mySparqlEndpoint + "?query=" + mySparqlQuery, {
