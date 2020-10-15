@@ -3,7 +3,7 @@
   color="blue"
   outlined
   autocomplete
-  on:value={$teacherFilter}
+  bind:value={$teacherFilter}
   {label}
   {items}
 />
@@ -28,11 +28,10 @@
       },
     });
     var json = await response.json();
-    checkResponse(json.results.bindings);
+    processResponse(json.results.bindings);
   }
 
-  function checkResponse(bindings) {
-    var result = {};
+  function processResponse(bindings) {
     bindings.forEach((teacher) => {
       var parsedJson = {
         text: teacher.TeacherLabel.value,
