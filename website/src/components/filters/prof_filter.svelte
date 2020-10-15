@@ -30,7 +30,7 @@
       var parsedJson = {
         text: teacher.TeacherLabel.value
       };
-      if(parsedJson.text.length < 3) continue
+      if(parsedJson.text.length < 3) return
         console.log(parsedJson);
         items = [...items, parsedJson];
     });
