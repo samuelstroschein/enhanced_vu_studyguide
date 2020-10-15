@@ -5,9 +5,11 @@
   import GoButton from "../components/go_button.svelte";
 </script>
 
+<div><Header /></div>
 <div class="grid gap-4 grid-cols-10">
-  <div class="col-span-10 ..."><Header /></div>
-  <div class="col-span-2 ..."><Filters /></div>
-  <div class="col-span-8 ..."><Results /></div>
-  <div class="col-span-2 ..."><GoButton /></div>
+  <div class="col-span-2">
+    <div><Filters /></div>
+    <div><GoButton /></div>
+  </div>
+  <div class="col-span-8"><Results /></div>
 </div>

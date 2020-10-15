@@ -4,6 +4,7 @@ import { queryResponse } from '../store.js';
 import { ecFilter } from '../store.js';
 import { levelFilter } from '../store.js';
 import { periodFilter } from '../store.js';
+import { languageFilter } from '../store.js';
 
 async function SparQL(){
 	
@@ -28,34 +29,50 @@ async function SparQL(){
 	FILTER (${$ecFilter})
 	FILTER (${$levelFilter})
 	FILTER (${$periodFilter})
-} LIMIT 10`;
+}LIMIT 100`;
 	var response = await fetch(mySparqlEndpoint + "?query=" + mySparqlQuery, {
 	method: "GET",
 	headers: {'Accept':'application/sparql-results+json', 'Content-Type':'application/sparql-results+json'}
 	})
 	var json = await response.json()
-	console.log(json)
 	$queryResponse = [];
-	json.results.bindings.forEach(function(val){
-		var parsedJson = {
-		text: val.title.value,
-		items: [
-		{ text:"Period: " + val.period.value},
-		{ text:"Credits: " + val.credits.value},
-		{ text:"Level: " + val.level.value},
-		{ text:"Professor: " + val.teacher.value},
-		{ text:"Language: " + val.language.value},
-		{ text:"Grading: " + val.grading.value},
-		{ text:"Course Content: " + val.content.value},
-		{ text:"Course Objective: " + val.objective.value},
-		{ text:"Faculty: " + val.facultylabel.value},
-		{ text:"Literature: " + val.literature.value},
-		{ text:"Teaching Methods: " + val.teachingMethod.value}
-    		]
-		  }
-		$queryResponse = [...$queryResponse, parsedJson]
-	});
+	checkResponse(json.results.bindings)
+	// json.results.bindings.forEach(function(val){
+	// 	var parsedJson = {
+	// 	text: val.title.value,
+	// 	items: [
+	// 	{ text:"Period: " + val.period.value},
+	// 	{ text:"Credits: " + val.credits.value},
+	// 	{ text:"Level: " + val.level.value},
+	// 	{ text:"Professor: " + val.teacher.value},
+	// 	{ text:"Language: " + val.language.value},
+	// 	{ text:"Grading: " + val.grading.value ? null : "Information does not exist."},
+	// 	{ text:"Course Content: " + val.content.value ? null : "Information does not exist."},
+	// 	{ text:"Course Objective: " + val.objective.value ? null : "Information does not exist."},
+	// 	{ text:"Faculty: " + val.facultylabel.value ? null : "Information does not exist."},
+	// 	{ text:"Literature: " + val.literature.value ? null : "Information does not exist."},
+	// 	{ text:"Teaching Methods: " + val.teachingMethod.value ? null : "Information does not exist."}
+    // 		]
+	// 	  }
+	// 	$queryResponse = [...$queryResponse, parsedJson]
+	// });
 }
+
+	function checkResponse(bindings){
+		var result = {}
+		bindings.forEach(course => {
+			var parsedJson = {
+				text: course.title.value,
+				items: []
+			}
+			for (var property in course){
+				if (property == "title") continue
+				parsedJson.items.push({ text: property + ": " + course[property].value})
+			}
+			console.log(parsedJson)
+			$queryResponse = [...$queryResponse, parsedJson]
+		});
+	}
 </script>
 
 <div class="flex justify-center">
@@ -63,8 +80,8 @@ async function SparQL(){
 </div>
 
 <!-- DEBUG STATEMENTS BELOW -->
-<!-- 
-<h5>DEBUG STATEMENTS</h5>
+
+<h5>DEBUG INFO</h5>
 <div>
 <p>DEBUG LEVEL: {$levelFilter}</p>
 </div>
@@ -75,4 +92,8 @@ async function SparQL(){
 
 <div>
 <p>DEBUG Period: {$periodFilter}</p>
-</div> -->
+</div>
+
+<div>
+<p>DEBUG Language: {$languageFilter}</p>
+</div>
