@@ -18,7 +18,6 @@ course_ids = [x.contents[0].split()[0] for x in course_ids_divs]
 # %%
 # BUILDING THE ONTOLOGY
 
-
 course_url_schema = "https://studiegids.vu.nl/en/2020-2021/courses/"
 
 g = Graph()
@@ -74,8 +73,8 @@ for i, course_id in enumerate(course_ids):
            Literal(int(general_information[3]))))
     # language is using the dbr recourse
     try:
-        lang_label = general_information[4]
-        language_dbr_format = general_information[4].split()[0] + '_language'
+        lang_label = general_information[4].split()[0]
+        language_dbr_format = lang_label + '_language'
         g.add((URIRef(VUC + course_id), DBO.language,
                URIRef(DBR + language_dbr_format)))
         g.add((URIRef(VUC + course_id), RDFS.label,
@@ -101,10 +100,10 @@ for i, course_id in enumerate(course_ids):
         pass
     try:
         for teacher in teachers:
-            label = teacher
+            teacher_label = teacher
             teacher_uri = "_".join(teachers[0].split())
             g.add(((URIRef(VUC + course_id)), VU.taughtBy, URIRef(VU + teacher_uri)))
-            g.add((URIRef(VU + teacher_uri)), RDFS.label, Literal(label))
+            g.add((URIRef(VU + teacher_uri)), RDFS.label, Literal(teacher_label))
     except:
         pass
     try:
