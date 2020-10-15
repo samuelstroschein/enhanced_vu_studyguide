@@ -1,6 +1,7 @@
 <script>
 import Button from "smelte/src/components/Button";
 import { queryResponse } from '../store.js';
+import { ecFilter } from '../store.js';
 
 async function SparQL(){
 	
@@ -20,8 +21,9 @@ async function SparQL(){
             vu:offeredByFaculty ?faculty;
             vu:literature ?literature;
             vu:teachingMethods ?teachingMethod. 
-       		?faculty rdfs:label ?facultylabel.
+       		?faculty rdfs:label ?facultylabel.       	
     }   	
+    FILTER (?credits = ${$ecFilter})
 } LIMIT 10`;
 	var response = await fetch(mySparqlEndpoint + "?query=" + mySparqlQuery, {
 	method: "GET",
