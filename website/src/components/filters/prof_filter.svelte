@@ -1,9 +1,10 @@
 <h5 class="flex justify-center">Select Professor</h5>
-<Select color="blue" bind:value={items} outlined autocomplete {label} {items} />
+<Select color="blue" bind:value={items} on:change={$teacherFilter} outlined autocomplete {label} {items} />
 
 <script>
   import Select from "smelte/src/components/Select";
   import { onMount } from "svelte";
+  import { teacherFilter } from '../../store.js';
 
   async function fetchProf() {
     var mySparqlEndpoint =
@@ -51,8 +52,10 @@
   $: selectedLabel = selectedItems.map(i => i.text).join(", ");
 
   const label = "Search professor...";
-
   onMount(async () => {
     fetchProf();
   });
+
+  
+  $:if($teacherFilter){console.log($teacherFilter)}
 </script>
