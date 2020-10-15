@@ -10,21 +10,21 @@ async function SparQL(){
 	
 	var mySparqlEndpoint = "https://enhanced-vu-studyguide.vercel.app/api/sparql" ;
 	var mySparqlQuery = `select DISTINCT * { 
-	?course rdf:type teach:Course;
-         	teach:academicTerm ?period;
-          	vu:courseLevel ?level;
-        	teach:ects ?credits;
-         	vu:taughtBy ?teacher;
-          	dbo:language ?language;
-           	teach:courseTitle ?title.
+	?Course rdf:type teach:Course;
+         	teach:academicTerm ?Period;
+          	vu:courseLevel ?Level;
+        	teach:ects ?Credits;
+         	vu:taughtBy ?Teacher;
+          	dbo:language ?Language;
+           	teach:courseTitle ?Title.
            OPTIONAL {
-        	?course teach:grading ?grading;
-            vu:courseContent ?content;
-            vu:courseObjective ?objective;
-            vu:offeredByFaculty ?faculty;
-            vu:literature ?literature;
-            vu:teachingMethods ?teachingMethod. 
-       		?faculty rdfs:label ?facultylabel.       	
+        	?Course teach:grading ?Grading;
+            vu:courseContent ?Content;
+            vu:courseObjective ?Objective;
+            vu:offeredByFaculty ?FacultyName;
+            vu:literature ?Literature;
+            vu:teachingMethods ?Teaching_Method.
+       		?FacultyName rdfs:label ?Faculty.
     }   	
 	FILTER (${$ecFilter})
 	FILTER (${$levelFilter})
@@ -37,39 +37,20 @@ async function SparQL(){
 	var json = await response.json()
 	$queryResponse = [];
 	checkResponse(json.results.bindings)
-	// json.results.bindings.forEach(function(val){
-	// 	var parsedJson = {
-	// 	text: val.title.value,
-	// 	items: [
-	// 	{ text:"Period: " + val.period.value},
-	// 	{ text:"Credits: " + val.credits.value},
-	// 	{ text:"Level: " + val.level.value},
-	// 	{ text:"Professor: " + val.teacher.value},
-	// 	{ text:"Language: " + val.language.value},
-	// 	{ text:"Grading: " + val.grading.value ? null : "Information does not exist."},
-	// 	{ text:"Course Content: " + val.content.value ? null : "Information does not exist."},
-	// 	{ text:"Course Objective: " + val.objective.value ? null : "Information does not exist."},
-	// 	{ text:"Faculty: " + val.facultylabel.value ? null : "Information does not exist."},
-	// 	{ text:"Literature: " + val.literature.value ? null : "Information does not exist."},
-	// 	{ text:"Teaching Methods: " + val.teachingMethod.value ? null : "Information does not exist."}
-    // 		]
-	// 	  }
-	// 	$queryResponse = [...$queryResponse, parsedJson]
-	// });
 }
 
 	function checkResponse(bindings){
 		var result = {}
 		bindings.forEach(course => {
 			var parsedJson = {
-				text: course.title.value,
+				text: course.Title.value,
 				items: []
 			}
 			for (var property in course){
-				if (property == "title") continue
+				if (property == "Title") continue
 				parsedJson.items.push({ text: property + ": " + course[property].value})
 			}
-			console.log(parsedJson)
+			// console.log(parsedJson)
 			$queryResponse = [...$queryResponse, parsedJson]
 		});
 	}
