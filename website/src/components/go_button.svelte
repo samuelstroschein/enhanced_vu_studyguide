@@ -10,16 +10,16 @@ async function SparQL(){
 	var mySparqlEndpoint = "https://enhanced-vu-studyguide.vercel.app/api/sparql" ;
 	console.log($teacherFilter)
 	if($teacherFilter === "NoTeacher"){
-		var mySparqlQuery = `select DISTINCT * { 
-		?Course rdf:type teach:Course;
+		var mySparqlQuery = `select DISTINCT ?StudieGids_URL ?Period ?Level ?Credits ?Teacher ?Language ?Title ?Grading ?Content ?Objective ?Literature ?Teaching_Method ?Faculty { 
+		?StudieGids_URL rdf:type teach:Course;
          	teach:academicTerm ?Period;
           	vu:courseLevel ?Level;
         	teach:ects ?Credits;
-         	vu:taughtBy ?Teacher;
+         	vu:taughtBy ?TeacherName;
           	dbo:language ?LanguageName;
            	teach:courseTitle ?Title.
            OPTIONAL {
-        	?Course teach:grading ?Grading;
+        	?StudieGids_URL teach:grading ?Grading;
             vu:courseContent ?Content;
             vu:courseObjective ?Objective;
             vu:offeredByFaculty ?FacultyName;
@@ -27,6 +27,7 @@ async function SparQL(){
             vu:teachingMethods ?Teaching_Method.
 			?FacultyName rdfs:label ?Faculty.
 			?LanguageName rdfs:label ?Language.
+			?TeacherName rdfs:label ?Teacher.
     }   	
 	FILTER (${$ecFilter})
 	FILTER (${$levelFilter})
@@ -35,8 +36,8 @@ async function SparQL(){
 }LIMIT 100`;
 	}
 	else {
-		var mySparqlQuery = `select DISTINCT * { 
-		?Course rdf:type teach:Course;
+		var mySparqlQuery = `select DISTINCT ?StudieGids_URL ?Period ?Level ?Credits ?Language ?Title ?Grading ?Content ?Objective ?Literature ?Teaching_Method ?Faculty { 
+		?StudieGids_URL rdf:type teach:Course;
          	teach:academicTerm ?Period;
           	vu:courseLevel ?Level;
         	teach:ects ?Credits;
@@ -44,7 +45,7 @@ async function SparQL(){
           	dbo:language ?LanguageName;
            	teach:courseTitle ?Title.
            OPTIONAL {
-        	?Course teach:grading ?Grading;
+        	?StudieGids_URL teach:grading ?Grading;
             vu:courseContent ?Content;
             vu:courseObjective ?Objective;
             vu:offeredByFaculty ?FacultyName;
@@ -52,14 +53,13 @@ async function SparQL(){
             vu:teachingMethods ?Teaching_Method.
 			?FacultyName rdfs:label ?Faculty.
 			?LanguageName rdfs:label ?Language.
-			?Teacher rdfs:label ?TeacherLabel.
+			?Teacher rdfs:label '${$teacherFilter}'.
     }   	
 	FILTER (${$ecFilter})
 	FILTER (${$levelFilter})
 	FILTER (${$periodFilter})
 	FILTER (${$languageFilter})
-	FILTER (?TeacherLabel = ${$teacherFilter})
-}LIMIT 1`;
+}`;
 	}
 	
 	var response = await fetch(mySparqlEndpoint + "?query=" + mySparqlQuery, {
