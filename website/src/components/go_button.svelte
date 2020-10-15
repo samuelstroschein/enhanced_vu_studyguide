@@ -23,7 +23,7 @@ async function SparQL(){
             vu:teachingMethods ?teachingMethod. 
        		?faculty rdfs:label ?facultylabel.       	
     }   	
-    FILTER (?credits = ${$ecFilter})
+    FILTER (${$ecFilter})
 } LIMIT 10`;
 	var response = await fetch(mySparqlEndpoint + "?query=" + mySparqlQuery, {
 	method: "GET",
