@@ -64,7 +64,7 @@ async function SparQL(){
 
 <!-- DEBUG STATEMENTS BELOW -->
 
-<h5>DEBUG INFO</h5>
+<!-- <h5>DEBUG INFO</h5>
 <div>
 <p>DEBUG LEVEL: {$levelFilter}</p>
 </div>
@@ -79,4 +79,4 @@ async function SparQL(){
 
 <div>
 <p>DEBUG Language: {$languageFilter}</p>
-</div>
+</div> -->
