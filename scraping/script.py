@@ -100,7 +100,8 @@ for i, course_id in enumerate(course_ids):
         pass
     try:
         for teacher in teachers:
-            teacher_uri = "_".join(teacher.split())
+            teacher_uri = "".join(teacher.split("."))
+            teacher_uri = "_".join(teacher_uri.split())
             g.add(((URIRef(VUC + course_id)), VU.taughtBy, URIRef(VU + teacher_uri)))
             g.add((URIRef(VU + teacher_uri)),
                   RDFS.label, Literal(teacher))
