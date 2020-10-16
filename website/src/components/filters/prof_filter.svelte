@@ -1,4 +1,4 @@
-<h5 class="flex justify-center">Select Professor</h5>
+<h5 class="flex justify-center py-4">Select Professor</h5>
 <Select
   color="blue"
   outlined
@@ -35,8 +35,8 @@
       method: "GET",
       headers: {
         Accept: "application/sparql-results+json",
-        "Content-Type": "application/sparql-results+json",
-      },
+        "Content-Type": "application/sparql-results+json"
+      }
     });
     var json = await response.json();
     processResponse(json.results.bindings);
@@ -44,10 +44,10 @@
 
   function processResponse(bindings) {
     var i = 0;
-    bindings.forEach((teacher) => {
+    bindings.forEach(teacher => {
       var parsedJson = {
         value: i,
-        text: teacher.TeacherLabel.value,
+        text: teacher.TeacherLabel.value
       };
       if (parsedJson.text.length < 3) return;
       // console.log(parsedJson);
