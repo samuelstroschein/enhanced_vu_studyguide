@@ -119,7 +119,6 @@ LIMIT 800`;
   }
 
   async function processResponse(bindings) {
-    var result = {};
     bindings.forEach((course) => {
       var parsedJson = {
         text: course.Title.value,
