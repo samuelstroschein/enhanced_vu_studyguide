@@ -48,12 +48,11 @@
       "https://enhanced-vu-studyguide.vercel.app/api/sparql";
     console.log($teacherFilter);
     if ($teacherFilter === "NoTeacher") {
-      var mySparqlQuery = `select DISTINCT ?StudieGids_URL ?Period ?Level ?Credits ?Teacher ?Language ?Title ?Grading ?Content ?Objective ?Literature ?Teaching_Method ?Faculty { 
+      var mySparqlQuery = `select DISTINCT ?StudieGids_URL ?Period ?Level ?Credits ?Language ?Title ?Grading ?Content ?Objective ?Literature ?Teaching_Method ?Faculty { 
 		    ?StudieGids_URL rdf:type teach:Course;
          	teach:academicTerm ?Period;
           vu:courseLevel ?Level;
         	teach:ects ?Credits;
-         	vu:taughtBy ?TeacherName;
           dbo:language ?LanguageName;
           teach:courseTitle ?Title.
         OPTIONAL {
@@ -65,7 +64,6 @@
             vu:teachingMethods ?Teaching_Method.
 			      ?FacultyName rdfs:label ?Faculty.
 			      ?LanguageName rdfs:label ?Language.
-			      ?TeacherName rdfs:label ?Teacher.
     }   	
 	FILTER (${$ecFilter})
 	FILTER (${$levelFilter})
