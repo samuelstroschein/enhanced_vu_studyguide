@@ -1,10 +1,14 @@
 <div class="flex justify-center py-8">
-  <div class="px-2">
-    <Button color="blue" on:click={SparQL}>Start Search</Button>
-  </div>
-  <div class="px-2">
-    <Button color="blue" on:click={reset}>Reset</Button>
-  </div>
+  {#await promise}
+    <ProgressLinear />
+  {:then}
+    <div class="px-2">
+      <Button color="blue" on:click={handleClick}>Start Search</Button>
+    </div>
+    <div class="px-2">
+      <Button color="blue" on:click={reset}>Reset</Button>
+    </div>
+  {/await}
 </div>
 
 <!-- DEBUG STATEMENTS BELOW -->
@@ -27,12 +31,20 @@
 </div> -->
 <script>
   import Button from "smelte/src/components/Button";
+  import ProgressLinear from "smelte/src/components/ProgressLinear";
   import { queryResponse } from "../store.js";
   import { ecFilter } from "../store.js";
   import { levelFilter } from "../store.js";
   import { periodFilter } from "../store.js";
   import { languageFilter } from "../store.js";
   import { teacherFilter } from "../store.js";
+
+  let promise = SparQL();
+
+  function handleClick() {
+    promise = SparQL();
+  }
+
   async function SparQL() {
     var mySparqlEndpoint =
       "https://enhanced-vu-studyguide.vercel.app/api/sparql";
