@@ -1,6 +1,6 @@
 <div class="flex justify-center py-8">
   {#await promise}
-    <ProgressLinear />
+    <ProgressLinear color="blue" />
   {:then}
     <div class="px-2">
       <Button color="blue" on:click={handleClick}>Start Search</Button>
