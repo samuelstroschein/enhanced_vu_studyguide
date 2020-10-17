@@ -36,23 +36,23 @@
     console.log($teacherFilter);
     if ($teacherFilter === "NoTeacher") {
       var mySparqlQuery = `select DISTINCT ?StudieGids_URL ?Period ?Level ?Credits ?Teacher ?Language ?Title ?Grading ?Content ?Objective ?Literature ?Teaching_Method ?Faculty { 
-		?StudieGids_URL rdf:type teach:Course;
+		    ?StudieGids_URL rdf:type teach:Course;
          	teach:academicTerm ?Period;
-          	vu:courseLevel ?Level;
+          vu:courseLevel ?Level;
         	teach:ects ?Credits;
          	vu:taughtBy ?TeacherName;
-          	dbo:language ?LanguageName;
-           	teach:courseTitle ?Title.
-           OPTIONAL {
+          dbo:language ?LanguageName;
+          teach:courseTitle ?Title.
+        OPTIONAL {
         	?StudieGids_URL teach:grading ?Grading;
             vu:courseContent ?Content;
             vu:courseObjective ?Objective;
             vu:offeredByFaculty ?FacultyName;
             vu:literature ?Literature;
             vu:teachingMethods ?Teaching_Method.
-			?FacultyName rdfs:label ?Faculty.
-			?LanguageName rdfs:label ?Language.
-			?TeacherName rdfs:label ?Teacher.
+			      ?FacultyName rdfs:label ?Faculty.
+			      ?LanguageName rdfs:label ?Language.
+			      ?TeacherName rdfs:label ?Teacher.
     }   	
 	FILTER (${$ecFilter})
 	FILTER (${$levelFilter})
@@ -60,24 +60,24 @@
 	FILTER (${$languageFilter})
 }LIMIT 100`;
     } else {
-      var mySparqlQuery = `select DISTINCT ?StudieGids_URL ?Period ?Level ?Credits ?Language ?Title ?Grading ?Content ?Objective ?Literature ?Teaching_Method ?Faculty { 
-		?StudieGids_URL rdf:type teach:Course;
+      var mySparqlQuery = `select DISTINCT ?StudieGids_URL ?Period ?Level ?Credits ?Teacher ?Language ?Title ?Grading ?Content ?Objective ?Literature ?Teaching_Method ?Faculty { 
+		    ?StudieGids_URL rdf:type teach:Course;
          	teach:academicTerm ?Period;
-          	vu:courseLevel ?Level;
+          vu:courseLevel ?Level;
         	teach:ects ?Credits;
-         	vu:taughtBy ?Teacher;
-          	dbo:language ?LanguageName;
-           	teach:courseTitle ?Title.
-           OPTIONAL {
+         	vu:taughtBy ?TeacherName;
+          dbo:language ?LanguageName;
+          teach:courseTitle ?Title.
+        OPTIONAL {
         	?StudieGids_URL teach:grading ?Grading;
             vu:courseContent ?Content;
             vu:courseObjective ?Objective;
             vu:offeredByFaculty ?FacultyName;
             vu:literature ?Literature;
             vu:teachingMethods ?Teaching_Method.
-			?FacultyName rdfs:label ?Faculty.
-			?LanguageName rdfs:label ?Language.
-			?Teacher rdfs:label '${$teacherFilter}'.
+			      ?FacultyName rdfs:label ?Faculty.
+			      ?LanguageName rdfs:label ?Language.
+			      ?TeacherName rdfs:label '${$teacherFilter}'.
     }   	
 	FILTER (${$ecFilter})
 	FILTER (${$levelFilter})
@@ -85,7 +85,7 @@
 	FILTER (${$languageFilter})
 }`;
     }
-
+console.log(mySparqlQuery)
     var response = await fetch(mySparqlEndpoint + "?query=" + mySparqlQuery, {
       method: "GET",
       headers: {
@@ -95,7 +95,15 @@
     });
     var json = await response.json();
     $queryResponse = [];
-    checkResponse(json.results.bindings);
+    console.log(json.results.bindings.length);
+    if(json.results.bindings.length != 0){
+      checkResponse(json.results.bindings);
+    }
+    else{
+      $queryResponse = [{text: "There were no results that matched your filter"}];
+    }
+    
+    
   }
 
   function checkResponse(bindings) {
@@ -114,6 +122,7 @@
       // console.log(parsedJson)
       $queryResponse = [...$queryResponse, parsedJson];
     });
+    console.log($queryResponse)
   }
 
   function reset(){
