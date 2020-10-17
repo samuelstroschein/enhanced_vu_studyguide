@@ -72,7 +72,7 @@
 	FILTER (${$periodFilter})
 	FILTER (${$languageFilter})
 }
-LIMIT 1000`;
+LIMIT 800`;
     } else {
       var mySparqlQuery = `select DISTINCT ?StudieGids_URL ?Period ?Level ?Credits ?Teacher ?Language ?Title ?Grading ?Content ?Objective ?Literature ?Teaching_Method ?Faculty { 
 		    ?StudieGids_URL rdf:type teach:Course;
