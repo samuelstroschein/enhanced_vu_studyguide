@@ -14,6 +14,61 @@
 label.text-xs{
   font-size:0.7rem
 }
+.lds-ring.svelte-h9ei60.svelte-h9ei60{
+  display:inline-block;
+  position:relative;
+  width:80px;
+  height:80px
+}
+
+.lds-ring.svelte-h9ei60 div.svelte-h9ei60{
+  box-sizing:border-box;
+  display:block;
+  position:absolute;
+  width:64px;
+  height:64px;
+  margin:8px;
+  border:8px solid 	#1E90FF;
+  border-radius:50%;
+  -webkit-animation:svelte-h9ei60-lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  animation:svelte-h9ei60-lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color:#1E90FF transparent transparent transparent
+}
+
+.lds-ring.svelte-h9ei60 div.svelte-h9ei60:nth-child(1){
+  -webkit-animation-delay:-0.45s;
+  animation-delay:-0.45s
+}
+
+.lds-ring.svelte-h9ei60 div.svelte-h9ei60:nth-child(2){
+  -webkit-animation-delay:-0.3s;
+  animation-delay:-0.3s
+}
+
+.lds-ring.svelte-h9ei60 div.svelte-h9ei60:nth-child(3){
+  -webkit-animation-delay:-0.15s;
+  animation-delay:-0.15s
+}
+
+@-webkit-keyframes svelte-h9ei60-lds-ring{
+  0%{
+    transform:rotate(0deg)
+  }
+
+  100%{
+    transform:rotate(360deg)
+  }
+}
+
+@keyframes svelte-h9ei60-lds-ring{
+  0%{
+    transform:rotate(0deg)
+  }
+
+  100%{
+    transform:rotate(360deg)
+  }
+}
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 
 /* Document

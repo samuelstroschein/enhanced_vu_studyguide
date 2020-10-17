@@ -1,6 +1,6 @@
 <div class="flex justify-center py-8">
   {#if loading}
-    <ProgressLinear color="blue" />
+    <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
   {:else}
     <div class="px-2">
       <Button color="blue" on:click={runSparQL}>Start Search</Button>
@@ -72,7 +72,7 @@
 	FILTER (${$periodFilter})
 	FILTER (${$languageFilter})
 }
-LIMIT 1000`;
+LIMIT 800`;
     } else {
       var mySparqlQuery = `select DISTINCT ?StudieGids_URL ?Period ?Level ?Credits ?Teacher ?Language ?Title ?Grading ?Content ?Objective ?Literature ?Teaching_Method ?Faculty { 
 		    ?StudieGids_URL rdf:type teach:Course;
@@ -140,3 +140,42 @@ LIMIT 1000`;
     location.reload();
   }
 </script>
+
+
+<style>
+  .lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border: 8px solid 	#1E90FF;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: 	#1E90FF transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+</style>
