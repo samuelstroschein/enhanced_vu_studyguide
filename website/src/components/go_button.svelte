@@ -1,14 +1,14 @@
 <div class="flex justify-center py-8">
-  {#await promise}
+  {#if loading}
     <ProgressLinear color="blue" />
-  {:then}
+  {:else}
     <div class="px-2">
-      <Button color="blue" on:click={handleClick}>Start Search</Button>
+      <Button color="blue" on:click={runSparQL}>Start Search</Button>
     </div>
     <div class="px-2">
       <Button color="blue" on:click={reset}>Reset</Button>
     </div>
-  {/await}
+  {/if}
 </div>
 
 <!-- DEBUG STATEMENTS BELOW -->
@@ -39,13 +39,11 @@
   import { languageFilter } from "../store.js";
   import { teacherFilter } from "../store.js";
 
-  let promise = SparQL();
+  let loading = false;
 
-  function handleClick() {
-    promise = SparQL();
-  }
 
-  async function SparQL() {
+  async function runSparQL() {
+    loading = true;
     var mySparqlEndpoint =
       "https://enhanced-vu-studyguide.vercel.app/api/sparql";
     console.log($teacherFilter);
@@ -117,6 +115,7 @@ LIMIT 1000`;
         { text: "There were no results that matched your filter" },
       ];
     }
+    loading = false;
   }
 
   async function processResponse(bindings) {
