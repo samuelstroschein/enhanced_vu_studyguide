@@ -99,7 +99,7 @@ LIMIT 1000`;
     var json = await response.json();
     $queryResponse = [];
     if (json.results.bindings.length != 0) {
-      checkResponse(json.results.bindings);
+      await processResponse(json.results.bindings);
     } else {
       $queryResponse = [
         { text: "There were no results that matched your filter" },
@@ -107,7 +107,7 @@ LIMIT 1000`;
     }
   }
 
-  function checkResponse(bindings) {
+  async function processResponse(bindings) {
     var result = {};
     bindings.forEach((course) => {
       var parsedJson = {
