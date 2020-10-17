@@ -123,7 +123,6 @@ LIMIT 1000`;
       // console.log(parsedJson)
       $queryResponse = [...$queryResponse, parsedJson];
     });
-    console.log($queryResponse);
   }
 
   function reset() {
