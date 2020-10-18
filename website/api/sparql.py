@@ -14,7 +14,8 @@ with open('vu_studyguide_pickled.pk', 'rb') as fi:
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def catch_all(path):
-    if len(request.args) < 1:
+    req_query = request.args.get('query')
+    if req_query is None:
         return
         """
         <h1>How to use the SPARQL endpoint: </h1>
