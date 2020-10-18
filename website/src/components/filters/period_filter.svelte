@@ -6,42 +6,42 @@
       class="form-radio h-5 w-8 text-blue-600"
       type="radio"
       bind:group={$periodFilter}
-      value={"?Period = 'P1'"}
+      value={"?Period = 'P1'@en"}
     />
     <span class="ml-2">{'P1'}</span>
     <input
       class="form-radio h-5 w-8 text-blue-600"
       type="radio"
       bind:group={$periodFilter}
-      value={"?Period = 'P2'"}
+      value={"?Period = 'P2'@en"}
     />
     <span class="ml-2">{'P2'}</span>
     <input
       class="form-radio h-5 w-8 text-blue-600"
       type="radio"
       bind:group={$periodFilter}
-      value={"?Period = 'P3'"}
+      value={"?Period = 'P3'@en"}
     />
     <span class="ml-2">{'P3'}</span>
     <input
       class="form-radio h-5 w-8 text-blue-600"
       type="radio"
       bind:group={$periodFilter}
-      value={"?Period = 'P4'"}
+      value={"?Period = 'P4'@en"}
     />
     <span class="ml-2">{'P4'}</span>
     <input
       class="form-radio h-5 w-8 text-blue-600"
       type="radio"
       bind:group={$periodFilter}
-      value={"?Period = 'P5'"}
+      value={"?Period = 'P5'@en"}
     />
     <span class="ml-2">{'P5'}</span>
     <input
       class="form-radio h-5 w-8 text-blue-600"
       type="radio"
       bind:group={$periodFilter}
-      value={"?Period = 'P6'"}
+      value={"?Period = 'P6'@en"}
     />
     <span class="ml-2">{'P6'}</span>
     <br />
