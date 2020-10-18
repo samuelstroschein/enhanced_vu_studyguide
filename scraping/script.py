@@ -27,7 +27,7 @@ VUC = Namespace(course_url_schema)
 g.bind('vuc', VUC)
 
 # VU = everything from the vu that is not a course
-VU = Namespace('https://www.vu.nl/en/properties/')
+VU = Namespace('https://www.vu.nl/en/')
 g.bind('vu', VU)
 
 # defining all namespaces
@@ -83,11 +83,12 @@ for i, course_id in enumerate(course_ids):
         pass
     try:
         label = general_information[5]
-        faculty_uri = "_".join(label.split())
-        g.add((URIRef(VUC + course_id), VU.offeredByFaculty,
-               URIRef(VU + faculty_uri)))
-        g.add((URIRef(VU + faculty_uri), RDFS.label,
-               Literal(label)))
+        if "faculty" in label.lower():
+            faculty_uri = "_".join(label.split())
+            g.add((URIRef(VUC + course_id), VU.offeredByFaculty,
+                URIRef(VU + faculty_uri)))
+            g.add((URIRef(VU + faculty_uri), RDFS.label,
+                Literal(label)))
     except:
         pass
     try:
