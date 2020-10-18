@@ -30,4 +30,5 @@ def catch_all(path):
     else:
         req_query = request.args.get('query')
         qres = g.query(req_query)
+        print(qres)
         return Response(qres.serialize(format="json"))
