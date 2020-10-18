@@ -27,7 +27,7 @@ VUC = Namespace(course_url_schema)
 g.bind('vuc', VUC)
 
 # VU = everything from the vu that is not a course
-VU = Namespace('https://www.vu.nl/en/properties/')
+VU = Namespace('https://www.vu.nl/en/')
 g.bind('vu', VU)
 
 # defining all namespaces
@@ -59,7 +59,7 @@ for i, course_id in enumerate(course_ids):
     g.add((URIRef(VUC + course_id), RDF.type, TEACH.Course))
     # name of the course
     g.add((URIRef(VUC + course_id), TEACH.courseTitle,
-           Literal(soup.find(id="title").find("h2").contents[0])))
+           Literal(soup.find(id="title").find("h2").contents[0],lang="en")))
     # general information (left box in studyguide) stores all DATA -> course_code, credits, period...
     general_information = soup.find("div", "course-data").findAll("td")
     # getting inner HTML for all data
@@ -68,7 +68,7 @@ for i, course_id in enumerate(course_ids):
            Literal(int(general_information[1].split()[0]))))
     # academicTerm is string because can be "whole academic year" or "P(eriod)3"
     g.add((URIRef(VUC + course_id), TEACH.academicTerm,
-           Literal(general_information[2])))
+           Literal(general_information[2],lang="en")))
     g.add((URIRef(VUC + course_id), VU.courseLevel,
            Literal(int(general_information[3]))))
     # language is using the dbr recourse
@@ -78,16 +78,17 @@ for i, course_id in enumerate(course_ids):
         g.add((URIRef(VUC + course_id), DBO.language,
                URIRef(DBR + language_dbr_format)))
         g.add((URIRef(DBR + language_dbr_format), RDFS.label,
-               Literal(lang_label)))
+               Literal(lang_label, lang="en")))
     except:
         pass
     try:
         label = general_information[5]
-        faculty_uri = "_".join(label.split())
-        g.add((URIRef(VUC + course_id), VU.offeredByFaculty,
-               URIRef(VU + faculty_uri)))
-        g.add((URIRef(VU + faculty_uri), RDFS.label,
-               Literal(label)))
+        if "faculty" in label.lower():
+            faculty_uri = "_".join(label.split())
+            g.add((URIRef(VUC + course_id), VU.offeredByFaculty,
+                URIRef(VU + faculty_uri)))
+            g.add((URIRef(VU + faculty_uri), RDFS.label,
+                Literal(label, lang="en")))
     except:
         pass
     try:
@@ -103,7 +104,7 @@ for i, course_id in enumerate(course_ids):
             teacher_uri = "".join(teacher.split("."))
             teacher_uri = "_".join(teacher_uri.split())
             g.add(((URIRef(VUC + course_id)), VU.taughtBy, URIRef(VU + teacher_uri)))
-            g.add(((URIRef(VU + teacher_uri)), RDFS.label, Literal(teacher)))
+            g.add(((URIRef(VU + teacher_uri)), RDFS.label, Literal(teacher, lang="en")))
     except:
         pass
     try:
@@ -116,22 +117,22 @@ for i, course_id in enumerate(course_ids):
             for h3 in section.findAll("h3"):
                 h3.extract()
         g.add((URIRef(VUC + course_id), VU.courseObjective,
-               Literal(" ".join(course_description[0].text.split()))))
+               Literal(" ".join(course_description[0].text.split()), lang="en")))
         g.add((URIRef(VUC + course_id), VU.courseContent,
-               Literal(" ".join(course_description[1].text.split()))))
+               Literal(" ".join(course_description[1].text.split()), lang="en")))
         g.add((URIRef(VUC + course_id), VU.teachingMethods,
-               Literal(" ".join(course_description[2].text.split()))))
+               Literal(" ".join(course_description[2].text.split()), lang="en")))
         g.add((URIRef(VUC + course_id), TEACH.grading,
-               Literal(" ".join(course_description[3].text.split()))))
+               Literal(" ".join(course_description[3].text.split()), lang="en")))
     except:
         pass
     try:
         g.add((URIRef(VUC + course_id), VU.literature,
-               Literal(" ".join(course_description[4].text.split()))))
+               Literal(" ".join(course_description[4].text.split()), lang="en")))
         g.add((URIRef(VUC + course_id), VU.targetAudience,
-               Literal(" ".join(course_description[5].text.split()))))
+               Literal(" ".join(course_description[5].text.split()), lang="en")))
         g.add((URIRef(VUC + course_id), VU.recommendedBackground,
-               Literal(" ".join(course_description[6].text.split()))))
+               Literal(" ".join(course_description[6].text.split()), lang="en")))
     except:
         pass
 # %%
