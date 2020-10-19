@@ -89,7 +89,7 @@ LIMIT 800`;
             vu:teachingMethods ?Teaching_Method.
 			      ?FacultyName rdfs:label ?Faculty.
 			      ?LanguageName rdfs:label ?Language.
-			      ?TeacherName rdfs:label '${$teacherFilter}'.
+			      ?TeacherName rdfs:label '${$teacherFilter}'@en.
     }   	
 	FILTER (${$ecFilter})
 	FILTER (${$levelFilter})
