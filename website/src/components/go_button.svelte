@@ -48,16 +48,16 @@
       "https://enhanced-vu-studyguide.vercel.app/api/sparql";
     console.log($teacherFilter);
     if ($teacherFilter === "NoTeacher") {
-      var mySparqlQuery = `select DISTINCT ?StudieGids_URL ?Credits ?Level ?Period ?Title ?Grading ?Content ?Objective ?Teaching_Method ?Literature ?Language ?Faculty { 
-          ?StudieGids_URL rdf:type vu:CourseCredits;
-                  teach:ects ?Credits.
-          ?StudieGids_URL rdf:type vu:CourseLevel;
-                  vu:courseLevel ?Level.
-          ?StudieGids_URL rdf:type vu:CoursePeriod;
-                      teach:academicTerm ?Period.
-          ?StudieGids_URL rdf:type teach:Course;
-                      dbo:language ?LanguageName;
-                      teach:courseTitle ?Title.
+      var mySparqlQuery = `select DISTINCT ?StudieGids_URL ?Credits ?Level ?Period ?Title ?Grading ?Content ?Objective ?Teaching_Method ?Literature ?Language ?Faculty where { 
+	?StudieGids_URL rdf:type vu:CourseCredits;
+    				teach:ects ?Credits.
+    ?StudieGids_URL rdf:type vu:CourseLevel;
+    				vu:courseLevel ?Level.
+    ?StudieGids_URL rdf:type vu:CoursePeriod;
+             		teach:academicTerm ?Period.
+    ?StudieGids_URL rdf:type teach:Course;
+          			dbo:language ?LanguageName;
+          			teach:courseTitle ?Title.
            OPTIONAL {
         	?StudieGids_URL teach:grading ?Grading;
             vu:courseContent ?Content;
@@ -65,8 +65,8 @@
             vu:offeredByFaculty ?FacultyName;
             vu:literature ?Literature;
             vu:teachingMethods ?Teaching_Method.
-          ?FacultyName rdfs:label ?Faculty.
-          ?LanguageName rdfs:label ?Language.
+			?FacultyName rdfs:label ?Faculty.
+			?LanguageName rdfs:label ?Language.
     		}   
 	FILTER (${$ecFilter})
 	FILTER (${$levelFilter})
