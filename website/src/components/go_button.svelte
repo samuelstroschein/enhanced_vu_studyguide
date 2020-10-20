@@ -48,7 +48,7 @@
       "https://enhanced-vu-studyguide.vercel.app/api/sparql";
     console.log($teacherFilter);
     if ($teacherFilter === "NoTeacher") {
-      var mySparqlQuery = `select DISTINCT ?StudieGids_URL ?Credits ?Level ?Period ?Title ?Grading ?Content ?Objective ?Teaching_Method ?Literature ?Language ?Faculty where { 
+      var mySparqlQuery = `select DISTINCT ?StudieGids_URL ?Credits ?Level ?Period ?Title ?Grading ?Content ?Objective ?Teaching_Method ?Literature ?Language ?Faculty { 
           ?StudieGids_URL rdf:type vu:CourseCredits;
                   teach:ects ?Credits.
           ?StudieGids_URL rdf:type vu:CourseLevel;
@@ -75,7 +75,7 @@
 }
 LIMIT 800`;
     } else {
-      var mySparqlQuery = `select DISTINCT ?StudieGids_URL ?Credits ?Level ?Period ?Title ?Grading ?Content ?Objective ?Teaching_Method ?Literature ?Language ?Faculty where { 
+      var mySparqlQuery = `select DISTINCT ?StudieGids_URL ?Credits ?Level ?Period ?Title ?Grading ?Content ?Objective ?Teaching_Method ?Literature ?Language ?Faculty { 
           ?StudieGids_URL rdf:type vu:CourseCredits;
                   teach:ects ?Credits.
           ?StudieGids_URL rdf:type vu:CourseLevel;
@@ -102,7 +102,9 @@ LIMIT 800`;
 	FILTER (${$periodFilter})
 	FILTER (${$languageFilter})
 }`;
+
     }
+    console.log(mySparqlQuery)
     var response = await fetch(mySparqlEndpoint + "?query=" + mySparqlQuery, {
       method: "GET",
       headers: {
@@ -112,6 +114,7 @@ LIMIT 800`;
     });
     var json = await response.json();
     $queryResponse = [];
+    console.log($queryResponse)
     if (json.results.bindings.length != 0) {
       await processResponse(json.results.bindings);
     } else {
