@@ -48,23 +48,26 @@
       "https://enhanced-vu-studyguide.vercel.app/api/sparql";
     console.log($teacherFilter);
     if ($teacherFilter === "NoTeacher") {
-      var mySparqlQuery = `select DISTINCT ?StudieGids_URL ?Period ?Level ?Credits ?Language ?Title ?Grading ?Content ?Objective ?Literature ?Teaching_Method ?Faculty { 
-		    ?StudieGids_URL rdf:type teach:Course;
-         	teach:academicTerm ?Period;
-          vu:courseLevel ?Level;
-        	teach:ects ?Credits;
-          dbo:language ?LanguageName;
-          teach:courseTitle ?Title.
-        OPTIONAL {
+      var mySparqlQuery = `select DISTINCT ?StudieGids_URL ?Credits ?Level ?Period ?Title ?Grading ?Content ?Objective ?Teaching_Method ?Literature ?Language ?Faculty where { 
+          ?StudieGids_URL rdf:type vu:CourseCredits;
+                  teach:ects ?Credits.
+          ?StudieGids_URL rdf:type vu:CourseLevel;
+                  vu:courseLevel ?Level.
+          ?StudieGids_URL rdf:type vu:CoursePeriod;
+                      teach:academicTerm ?Period.
+          ?StudieGids_URL rdf:type teach:Course;
+                      dbo:language ?LanguageName;
+                      teach:courseTitle ?Title.
+           OPTIONAL {
         	?StudieGids_URL teach:grading ?Grading;
             vu:courseContent ?Content;
             vu:courseObjective ?Objective;
             vu:offeredByFaculty ?FacultyName;
             vu:literature ?Literature;
             vu:teachingMethods ?Teaching_Method.
-			      ?FacultyName rdfs:label ?Faculty.
-			      ?LanguageName rdfs:label ?Language.
-    }   	
+          ?FacultyName rdfs:label ?Faculty.
+          ?LanguageName rdfs:label ?Language.
+    		}   
 	FILTER (${$ecFilter})
 	FILTER (${$levelFilter})
 	FILTER (${$periodFilter})
@@ -72,25 +75,28 @@
 }
 LIMIT 800`;
     } else {
-      var mySparqlQuery = `select DISTINCT ?StudieGids_URL ?Period ?Level ?Credits ?Teacher ?Language ?Title ?Grading ?Content ?Objective ?Literature ?Teaching_Method ?Faculty { 
-		    ?StudieGids_URL rdf:type teach:Course;
-         	teach:academicTerm ?Period;
-          vu:courseLevel ?Level;
-        	teach:ects ?Credits;
-         	vu:taughtBy ?TeacherName;
-          dbo:language ?LanguageName;
-          teach:courseTitle ?Title.
-        OPTIONAL {
+      var mySparqlQuery = `select DISTINCT ?StudieGids_URL ?Credits ?Level ?Period ?Title ?Grading ?Content ?Objective ?Teaching_Method ?Literature ?Language ?Faculty where { 
+          ?StudieGids_URL rdf:type vu:CourseCredits;
+                  teach:ects ?Credits.
+          ?StudieGids_URL rdf:type vu:CourseLevel;
+                  vu:courseLevel ?Level.
+          ?StudieGids_URL rdf:type vu:CoursePeriod;
+                      teach:academicTerm ?Period.
+          ?StudieGids_URL rdf:type teach:Course;
+                      dbo:language ?LanguageName;
+                      teach:courseTitle ?Title;
+                      vu:taughtBy ?TeacherName.
+           OPTIONAL {
         	?StudieGids_URL teach:grading ?Grading;
             vu:courseContent ?Content;
             vu:courseObjective ?Objective;
             vu:offeredByFaculty ?FacultyName;
             vu:literature ?Literature;
             vu:teachingMethods ?Teaching_Method.
-			      ?FacultyName rdfs:label ?Faculty.
-			      ?LanguageName rdfs:label ?Language.
-			      ?TeacherName rdfs:label '${$teacherFilter}'@en.
-    }   	
+          ?FacultyName rdfs:label ?Faculty.
+          ?LanguageName rdfs:label ?Language.
+          ?TeacherName rdfs:label '${$teacherFilter}'@en.
+    		}   
 	FILTER (${$ecFilter})
 	FILTER (${$levelFilter})
 	FILTER (${$periodFilter})
