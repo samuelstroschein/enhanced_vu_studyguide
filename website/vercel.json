@@ -1,7 +1,7 @@
 {
     "functions": {
       "api/sparql.py": {
-        "includeFiles": "vu_studyguide_pickled.pk"
+        "includeFiles": "./api/ontology_pickled.pk"
       }
     }
   }
