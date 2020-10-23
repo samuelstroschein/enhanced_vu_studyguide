@@ -46,7 +46,7 @@
     var mySparqlEndpoint =
       "https://enhanced-vu-studyguide.vercel.app/api/sparql";
     if ($teacherFilter === "NoTeacher") {
-      var mySparqlQuery = `select DISTINCT ?StudieGids_URL ?Credits ?Level ?Period ?Title ?Grading ?Content ?Objective ?Teaching_Method ?Literature ?Language ?Faculty where { 
+      var mySparqlQuery = `select DISTINCT ?StudieGids_URL ?Credits ?Level ?Period ?Title ?Grading ?Content ?Objective ?Teaching_Method ?Literature ?Language ?LanguageUrl ?Faculty where { 
           ?StudieGids_URL rdf:type vu:CourseCredits;
                       teach:ects ?Credits.
           ?StudieGids_URL rdf:type vu:CourseLevel;
@@ -54,7 +54,7 @@
           ?StudieGids_URL rdf:type vu:CoursePeriod;
                       teach:academicTerm ?Period.
           ?StudieGids_URL rdf:type teach:Course;
-                      dbo:language ?LanguageName;
+                      dbo:language ?LanguageUrl;
                       teach:courseTitle ?Title.
            OPTIONAL {
         	?StudieGids_URL teach:grading ?Grading;
@@ -64,7 +64,7 @@
             vu:literature ?Literature;
             vu:teachingMethods ?Teaching_Method.
           ?FacultyName rdfs:label ?Faculty.
-          ?LanguageName rdfs:label ?Language.
+          ?LanguageUrl rdfs:label ?Language.
     		}   
 	FILTER (${$ecFilter})
 	FILTER (${$levelFilter})
@@ -73,7 +73,7 @@
 }
 LIMIT 800`;
     } else {
-      var mySparqlQuery = `select DISTINCT ?StudieGids_URL ?Credits ?Level ?Period ?Title ?Grading ?Content ?Objective ?Teaching_Method ?Literature ?Language ?Faculty where { 
+      var mySparqlQuery = `select DISTINCT ?StudieGids_URL ?Credits ?Level ?Period ?Title ?Grading ?Content ?Objective ?Teaching_Method ?Literature ?Language ?LanguageUrl ?Faculty where { 
           ?StudieGids_URL rdf:type vu:CourseCredits;
                   teach:ects ?Credits.
           ?StudieGids_URL rdf:type vu:CourseLevel;
@@ -81,7 +81,7 @@ LIMIT 800`;
           ?StudieGids_URL rdf:type vu:CoursePeriod;
                       teach:academicTerm ?Period.
           ?StudieGids_URL rdf:type teach:Course;
-                      dbo:language ?LanguageName;
+                      dbo:language ?LanguageUrl;
                       teach:courseTitle ?Title;
                       vu:taughtBy ?TeacherName.
            OPTIONAL {
@@ -92,7 +92,7 @@ LIMIT 800`;
             vu:literature ?Literature;
             vu:teachingMethods ?Teaching_Method.
           ?FacultyName rdfs:label ?Faculty.
-          ?LanguageName rdfs:label ?Language.
+          ?LanguageUrl rdfs:label ?Language.
           ?TeacherName rdfs:label '${$teacherFilter}'@en.
     		}   
 	FILTER (${$ecFilter})
@@ -110,6 +110,7 @@ LIMIT 800`;
       },
     });
     var json = await response.json();
+    console.log(json)
     $queryResponse = [];
     if (json.results.bindings.length != 0) {
       await processResponse(json.results.bindings);
@@ -128,10 +129,17 @@ LIMIT 800`;
         items: [],
       };
       for (var property in course) {
-        if (property == "Title") continue;
+        if (property == "Title" || property == "Language") continue;
+        if (property == "LanguageUrl") {
+          parsedJson.items.push({
+            text: `Language: <a href='${course['LanguageUrl'].value} target="_blank"'\>${course['Language'].value}</a>`
+          })
+        }
+        else {
         parsedJson.items.push({
           text: property + ": " + course[property].value,
         });
+      }
       }
       // console.log(parsedJson)
       $queryResponse = [...$queryResponse, parsedJson];

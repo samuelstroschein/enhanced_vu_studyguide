@@ -7,6 +7,6 @@
 <Treeview items={$queryResponse} />
 
 <script>
-  import Treeview from "smelte/src/components/Treeview";
+  import Treeview from "../modifiedSmelte/Treeview";
   import { queryResponse } from "../store.js";
 </script>
