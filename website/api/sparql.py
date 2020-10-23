@@ -23,7 +23,7 @@ def catch_all(path):
             <li>Add your SPARQL Query as query parameter e.g. '.../api/sparql?query={YOUR SPARQL QUERY}'</li>\
             <li>Make sure that your SPARQL Query does not include prefix definitions e.g. @PREFIX vu <something> instead start the query with SELECT ...</li>\
             <li>Your Query must contain whitespace (which are automatically parsed with %)</li>\
-            <li>The response is JSON</li>\
+            <li>The response is a JSON</li>\
             <li>The endpoint uses RDFLib, thus all queries that RDFLib allows are valid and vice versa.</li>\
         </ul>\
         "
