@@ -31,7 +31,6 @@
 </div> -->
 <script>
   import Button from "smelte/src/components/Button";
-  import ProgressLinear from "smelte/src/components/ProgressLinear";
   import { queryResponse } from "../store.js";
   import { ecFilter } from "../store.js";
   import { levelFilter } from "../store.js";
