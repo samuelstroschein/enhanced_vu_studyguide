@@ -46,7 +46,6 @@
     loading = true;
     var mySparqlEndpoint =
       "https://enhanced-vu-studyguide.vercel.app/api/sparql";
-    console.log($teacherFilter);
     if ($teacherFilter === "NoTeacher") {
       var mySparqlQuery = `select DISTINCT ?StudieGids_URL ?Credits ?Level ?Period ?Title ?Grading ?Content ?Objective ?Teaching_Method ?Literature ?Language ?Faculty where { 
           ?StudieGids_URL rdf:type vu:CourseCredits;
@@ -104,7 +103,6 @@ LIMIT 800`;
 }`;
 
     }
-    console.log(mySparqlQuery)
     var response = await fetch(mySparqlEndpoint + "?query=" + mySparqlQuery, {
       method: "GET",
       headers: {
@@ -114,7 +112,6 @@ LIMIT 800`;
     });
     var json = await response.json();
     $queryResponse = [];
-    console.log($queryResponse)
     if (json.results.bindings.length != 0) {
       await processResponse(json.results.bindings);
     } else {
