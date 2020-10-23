@@ -132,7 +132,7 @@ LIMIT 800`;
         if (property == "Title" || property == "Language") continue;
         if (property == "LanguageUrl") {
           parsedJson.items.push({
-            text: `Language: <a href='${course['LanguageUrl'].value} target="_blank"'\>${course['Language'].value}</a>`
+            text: `Language: <a href='${course['LanguageUrl'].value}' target='_blank'\>${course['Language'].value}</a>`
           })
         }
         else {
