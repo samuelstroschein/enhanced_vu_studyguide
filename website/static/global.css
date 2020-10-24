@@ -1,5 +1,9 @@
-.line.svelte-xd9zs6{
-  height:1px
+.reverse.svelte-zzky5a{
+  transform:rotate(180deg)
+}
+
+.tip.svelte-zzky5a{
+  transform:rotate(90deg)
 }
 .label-top.svelte-r33x2y{
   line-height:0.05
@@ -14,12 +18,8 @@
 label.text-xs{
   font-size:0.7rem
 }
-.reverse.svelte-zzky5a{
-  transform:rotate(180deg)
-}
-
-.tip.svelte-zzky5a{
-  transform:rotate(90deg)
+.line.svelte-xd9zs6{
+  height:1px
 }
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 
