@@ -16,7 +16,7 @@ After running the last command the website will open on localhost port 3000. One
 
 The endpoint is also hosted at vercel using the following [url](https://enhanced-vu-studyguide.vercel.app/api/sparql). If you open the endpoint without any query parsed into t he link it shows a quick explanation of the endpoint itsself. 
 
-The scraping folder can be ignored but is used to fetch all webpages at [Vu Studyguide](https://studiegids.vu.nl/en) using all the codes of courses at the vrije universiteit, these codes have been obtained by manually downloading all html code at the sign up for extracurricular courses in the sign up for courses page at [VuNet](vunet.vu.nl). The scraper will create a ttl file with only direct triples, any inferred triples have to be added manually using Protegé (or any other program that can do the same). If one would want to run the scraper again you need to navigate to the scraper folder using terminal and run:
+The scraping folder can be ignored but is used to fetch all webpages at [Vu Studyguide](https://studiegids.vu.nl/en) and convert the info about courses at the Vrije Universiteit Amsterdam into triples. The course codes have been obtained by manually downloading all html code at the sign up for extracurricular courses in the sign up for courses page at [VuNet](vunet.vu.nl). The scraper will create a ttl file with only direct triples, any inferred triples have to be added manually using Protegé (or any other program that can do the same). If one would want to run the scraper again you need to navigate to the scraper folder using terminal and run:
 
 ```
 python script.py
